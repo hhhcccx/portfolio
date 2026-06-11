@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>灵感游乐场</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0c0d0f;
+        --panel: rgba(255, 255, 255, 0.075);
+        --panel-strong: rgba(255, 255, 255, 0.13);
+        --text: #f5f1e8;
+        --muted: rgba(245, 241, 232, 0.62);
+        --faint: rgba(245, 241, 232, 0.16);
+        --line: rgba(255, 255, 255, 0.13);
+        --gold: #d8b35a;
+        --cyan: #8fd7d2;
+        --rose: #d596a6;
+        --shadow: 0 26px 80px rgba(0, 0, 0, 0.42);
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        overflow-x: hidden;
+        background:
+          radial-gradient(circle at 18% 18%, rgba(216, 179, 90, 0.16), transparent 28rem),
+          radial-gradient(circle at 78% 28%, rgba(143, 215, 210, 0.12), transparent 30rem),
+          linear-gradient(140deg, #090a0c 0%, #111315 52%, #090a0b 100%);
+        color: var(--text);
+        font-family: "Avenir Next", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        content: "";
+        opacity: 0.32;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+      }
+
+      body::after {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        content: "";
+        background:
+          radial-gradient(circle at 50% 46%, transparent 0%, rgba(8, 9, 10, 0.12) 42%, rgba(8, 9, 10, 0.62) 100%),
+          linear-gradient(180deg, rgba(8, 9, 10, 0.1), rgba(8, 9, 10, 0.5));
+      }
+
+      .galaxy-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .galaxy-backdrop canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: 0.72;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 40px 20px;
+      }
+
+      .stage {
+        width: min(1040px, 100%);
+        animation: rise 820ms var(--ease) both;
+      }
+
+      .topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 44px;
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: 0;
+      }
+
+      .mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap;
+      }
+
+      .mark::before {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 0 30px rgba(216, 179, 90, 0.8);
+        content: "";
+      }
+
+      .hero {
+        display: grid;
+        gap: 22px;
+        margin-bottom: 34px;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 0;
+        font-family: Georgia, "Songti SC", "SimSun", serif;
+        font-size: clamp(46px, 8vw, 112px);
+        font-weight: 500;
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        max-width: 570px;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(15px, 2vw, 18px);
+        line-height: 1.8;
+      }
+
+      .playground {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.045));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(22px);
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      button {
+        position: relative;
+        min-height: 148px;
+        padding: 22px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(8, 9, 10, 0.54);
+        color: var(--text);
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+        transition:
+          transform 260ms var(--ease),
+          border-color 260ms var(--ease),
+          background 260ms var(--ease);
+      }
+
+      button::after {
+        position: absolute;
+        inset: auto 18px 18px auto;
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--faint);
+        border-radius: 50%;
+        color: var(--muted);
+        content: "↗";
+        display: grid;
+        font-size: 18px;
+        place-items: center;
+        transition:
+          transform 260ms var(--ease),
+          color 260ms var(--ease),
+          border-color 260ms var(--ease);
+      }
+
+      button:hover,
+      button:focus-visible {
+        border-color: rgba(245, 241, 232, 0.34);
+        background: var(--panel-strong);
+        outline: none;
+        transform: translateY(-4px);
+      }
+
+      button:hover::after,
+      button:focus-visible::after {
+        border-color: rgba(245, 241, 232, 0.32);
+        color: var(--text);
+        transform: rotate(45deg);
+      }
+
+      button:active {
+        transform: translateY(-1px) scale(0.99);
+      }
+
+      .button-kicker {
+        display: block;
+        margin-bottom: 28px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .button-title {
+        display: block;
+        max-width: 8em;
+        font-size: clamp(20px, 2.7vw, 30px);
+        font-weight: 600;
+        line-height: 1.18;
+      }
+
+      .result {
+        position: relative;
+        min-height: 210px;
+        padding: clamp(26px, 5vw, 48px);
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background:
+          linear-gradient(120deg, rgba(216, 179, 90, 0.1), transparent 40%),
+          rgba(255, 255, 255, 0.045);
+      }
+
+      .result::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(245, 241, 232, 0.46), transparent);
+        content: "";
+      }
+
+      .result-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 34px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .result-label span:last-child {
+        color: rgba(245, 241, 232, 0.42);
+      }
+
+      .idea {
+        max-width: 760px;
+        margin: 0;
+        font-family: Georgia, "Songti SC", "SimSun", serif;
+        font-size: clamp(30px, 5.8vw, 68px);
+        line-height: 1.12;
+        letter-spacing: 0;
+      }
+
+      .idea.is-changing {
+        animation: reveal 460ms var(--ease) both;
+      }
+
+      .ambient {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 12px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.045);
+        font-size: 12px;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes reveal {
+        0% {
+          opacity: 0;
+          filter: blur(10px);
+          transform: translateY(14px);
+        }
+        100% {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 24px 14px;
+        }
+
+        .topline {
+          align-items: flex-start;
+          flex-direction: column;
+          margin-bottom: 34px;
+        }
+
+        .buttons {
+          grid-template-columns: 1fr;
+        }
+
+        button {
+          min-height: 112px;
+        }
+
+        .button-kicker {
+          margin-bottom: 16px;
+        }
+
+        .result {
+          min-height: 240px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 1ms !important;
+          scroll-behavior: auto !important;
+          transition-duration: 1ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="galaxy-backdrop" id="galaxy-backdrop" aria-hidden="true"></div>
+    <main>
+      <section class="stage" aria-labelledby="page-title">
+        <div class="topline">
+          <span class="mark">No Login · Instant Spark</span>
+          <span>for products, visuals, and tiny websites</span>
+        </div>
+
+        <div class="hero">
+          <h1 id="page-title">灵感游乐场</h1>
+          <p class="subtitle">给脑子轻轻点一下火。选一个方向，页面会随机抛出一条可以直接拿去展开的创意。</p>
+        </div>
+
+        <div class="playground">
+          <div class="buttons" aria-label="灵感类型">
+            <button type="button" data-kind="product">
+              <span class="button-kicker">PRODUCT</span>
+              <span class="button-title">随机产品点子</span>
+            </button>
+            <button type="button" data-kind="visual">
+              <span class="button-kicker">VISUAL</span>
+              <span class="button-title">随机视觉创意</span>
+            </button>
+            <button type="button" data-kind="web">
+              <span class="button-kicker">WEB</span>
+              <span class="button-title">随机网页主题</span>
+            </button>
+          </div>
+
+          <article class="result" aria-live="polite">
+            <div class="result-label">
+              <span id="result-type">今日开场</span>
+              <span id="result-count">READY</span>
+            </div>
+            <p class="idea" id="idea">给独立创作者的深夜灵感发射台</p>
+            <div class="ambient" aria-hidden="true">
+              <span class="chip">AI idea</span>
+              <span class="chip">Visual mood</span>
+              <span class="chip">Web concept</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const galaxyVertexShader = `
+        attribute vec2 position;
+        varying vec2 vUv;
+
+        void main() {
+          vUv = position * 0.5 + 0.5;
+          gl_Position = vec4(position, 0.0, 1.0);
+        }
+      `;
+
+      const galaxyFragmentShader = `
+        precision highp float;
+
+        uniform float uTime;
+        uniform vec3 uResolution;
+        uniform vec2 uFocal;
+        uniform vec2 uRotation;
+        uniform float uStarSpeed;
+        uniform float uDensity;
+        uniform float uHueShift;
+        uniform float uSpeed;
+        uniform vec2 uMouse;
+        uniform float uGlowIntensity;
+        uniform float uSaturation;
+        uniform float uTwinkleIntensity;
+        uniform float uRotationSpeed;
+        uniform float uRepulsionStrength;
+        uniform float uMouseActiveFactor;
+
+        varying vec2 vUv;
+
+        #define NUM_LAYER 4.0
+        #define STAR_COLOR_CUTOFF 0.2
+        #define MAT45 mat2(0.7071, -0.7071, 0.7071, 0.7071)
+        #define PERIOD 3.0
+
+        float Hash21(vec2 p) {
+          p = fract(p * vec2(123.34, 456.21));
+          p += dot(p, p + 45.32);
+          return fract(p.x * p.y);
+        }
+
+        float tri(float x) {
+          return abs(fract(x) * 2.0 - 1.0);
+        }
+
+        float tris(float x) {
+          float t = fract(x);
+          return 1.0 - smoothstep(0.0, 1.0, abs(2.0 * t - 1.0));
+        }
+
+        float trisn(float x) {
+          float t = fract(x);
+          return 2.0 * (1.0 - smoothstep(0.0, 1.0, abs(2.0 * t - 1.0))) - 1.0;
+        }
+
+        vec3 hsv2rgb(vec3 c) {
+          vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+          vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+          return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+        }
+
+        float Star(vec2 uv, float flare) {
+          float d = max(length(uv), 0.001);
+          float m = (0.05 * uGlowIntensity) / d;
+          float rays = smoothstep(0.0, 1.0, 1.0 - abs(uv.x * uv.y * 1000.0));
+          m += rays * flare * uGlowIntensity;
+          uv *= MAT45;
+          rays = smoothstep(0.0, 1.0, 1.0 - abs(uv.x * uv.y * 1000.0));
+          m += rays * 0.3 * flare * uGlowIntensity;
+          m *= smoothstep(1.0, 0.2, d);
+          return m;
+        }
+
+        vec3 StarLayer(vec2 uv) {
+          vec3 col = vec3(0.0);
+          vec2 gv = fract(uv) - 0.5;
+          vec2 id = floor(uv);
+
+          for (int y = -1; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+              vec2 offset = vec2(float(x), float(y));
+              vec2 si = id + offset;
+              float seed = Hash21(si);
+              float size = fract(seed * 345.32);
+              float glossLocal = tri(uStarSpeed / (PERIOD * seed + 1.0));
+              float flareSize = smoothstep(0.9, 1.0, size) * glossLocal;
+              float red = smoothstep(STAR_COLOR_CUTOFF, 1.0, Hash21(si + 1.0)) + STAR_COLOR_CUTOFF;
+              float blu = smoothstep(STAR_COLOR_CUTOFF, 1.0, Hash21(si + 3.0)) + STAR_COLOR_CUTOFF;
+              float grn = min(red, blu) * seed;
+              vec3 base = vec3(red, grn, blu);
+              float hue = atan(base.g - base.r, base.b - base.r) / (2.0 * 3.14159) + 0.5;
+              hue = fract(hue + uHueShift / 360.0);
+              float sat = length(base - vec3(dot(base, vec3(0.299, 0.587, 0.114)))) * uSaturation;
+              float val = max(max(base.r, base.g), base.b);
+              base = hsv2rgb(vec3(hue, sat, val));
+              vec2 pad = vec2(
+                tris(seed * 34.0 + uTime * uSpeed / 10.0),
+                tris(seed * 38.0 + uTime * uSpeed / 30.0)
+              ) - 0.5;
+              float star = Star(gv - offset - pad, flareSize);
+              float twinkle = trisn(uTime * uSpeed + seed * 6.2831) * 0.5 + 1.0;
+              star *= mix(1.0, twinkle, uTwinkleIntensity);
+              col += star * size * base;
+            }
+          }
+
+          return col;
+        }
+
+        void main() {
+          vec2 focalPx = uFocal * uResolution.xy;
+          vec2 uv = (vUv * uResolution.xy - focalPx) / uResolution.y;
+          vec2 mousePosUV = (uMouse * uResolution.xy - focalPx) / uResolution.y;
+          float mouseDist = length(uv - mousePosUV);
+          vec2 repulsion = normalize(uv - mousePosUV) * (uRepulsionStrength / (mouseDist + 0.1));
+          uv += repulsion * 0.035 * uMouseActiveFactor;
+
+          float autoRotAngle = uTime * uRotationSpeed;
+          mat2 autoRot = mat2(cos(autoRotAngle), -sin(autoRotAngle), sin(autoRotAngle), cos(autoRotAngle));
+          uv = autoRot * uv;
+          uv = mat2(uRotation.x, -uRotation.y, uRotation.y, uRotation.x) * uv;
+
+          vec3 col = vec3(0.0);
+
+          for (float i = 0.0; i < 1.0; i += 0.25) {
+            float depth = fract(i + uStarSpeed * uSpeed);
+            float scale = mix(20.0 * uDensity, 0.5 * uDensity, depth);
+            float fade = depth * smoothstep(1.0, 0.9, depth);
+            col += StarLayer(uv * scale + i * 453.32) * fade;
+          }
+
+          col *= 0.82;
+          float alpha = smoothstep(0.0, 0.25, length(col));
+          gl_FragColor = vec4(col, min(alpha, 0.72));
+        }
+      `;
+
+      function createGalaxyBackdrop() {
+        const host = document.querySelector("#galaxy-backdrop");
+        const canvas = document.createElement("canvas");
+        const gl = canvas.getContext("webgl", {
+          alpha: true,
+          antialias: false,
+          premultipliedAlpha: false
+        });
+
+        if (!host || !gl) {
+          return;
+        }
+
+        host.appendChild(canvas);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.clearColor(0, 0, 0, 0);
+
+        function compile(type, source) {
+          const shader = gl.createShader(type);
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.warn(gl.getShaderInfoLog(shader));
+          }
+          return shader;
+        }
+
+        const program = gl.createProgram();
+        gl.attachShader(program, compile(gl.VERTEX_SHADER, galaxyVertexShader));
+        gl.attachShader(program, compile(gl.FRAGMENT_SHADER, galaxyFragmentShader));
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        const vertices = new Float32Array([-1, -1, 3, -1, -1, 3]);
+        const buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+        const position = gl.getAttribLocation(program, "position");
+        gl.enableVertexAttribArray(position);
+        gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+
+        const uniforms = {
+          time: gl.getUniformLocation(program, "uTime"),
+          resolution: gl.getUniformLocation(program, "uResolution"),
+          focal: gl.getUniformLocation(program, "uFocal"),
+          rotation: gl.getUniformLocation(program, "uRotation"),
+          starSpeed: gl.getUniformLocation(program, "uStarSpeed"),
+          density: gl.getUniformLocation(program, "uDensity"),
+          hueShift: gl.getUniformLocation(program, "uHueShift"),
+          speed: gl.getUniformLocation(program, "uSpeed"),
+          mouse: gl.getUniformLocation(program, "uMouse"),
+          glowIntensity: gl.getUniformLocation(program, "uGlowIntensity"),
+          saturation: gl.getUniformLocation(program, "uSaturation"),
+          twinkleIntensity: gl.getUniformLocation(program, "uTwinkleIntensity"),
+          rotationSpeed: gl.getUniformLocation(program, "uRotationSpeed"),
+          repulsionStrength: gl.getUniformLocation(program, "uRepulsionStrength"),
+          mouseActiveFactor: gl.getUniformLocation(program, "uMouseActiveFactor")
+        };
+
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const targetMouse = { x: 0.5, y: 0.5, active: 0 };
+        const smoothMouse = { x: 0.5, y: 0.5, active: 0 };
+
+        function resize() {
+          const dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+          const width = Math.max(1, Math.floor(window.innerWidth * dpr));
+          const height = Math.max(1, Math.floor(window.innerHeight * dpr));
+          if (canvas.width !== width || canvas.height !== height) {
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
+            gl.viewport(0, 0, width, height);
+          }
+        }
+
+        function handlePointerMove(event) {
+          targetMouse.x = event.clientX / window.innerWidth;
+          targetMouse.y = 1 - event.clientY / window.innerHeight;
+          targetMouse.active = 1;
+        }
+
+        function handlePointerLeave() {
+          targetMouse.active = 0;
+        }
+
+        window.addEventListener("resize", resize);
+        window.addEventListener("pointermove", handlePointerMove);
+        window.addEventListener("pointerleave", handlePointerLeave);
+        resize();
+
+        function render(frameTime) {
+          const seconds = reduceMotion ? 0 : frameTime * 0.001;
+          smoothMouse.x += (targetMouse.x - smoothMouse.x) * 0.045;
+          smoothMouse.y += (targetMouse.y - smoothMouse.y) * 0.045;
+          smoothMouse.active += (targetMouse.active - smoothMouse.active) * 0.045;
+
+          gl.uniform1f(uniforms.time, seconds);
+          gl.uniform3f(uniforms.resolution, canvas.width, canvas.height, canvas.width / canvas.height);
+          gl.uniform2f(uniforms.focal, 0.53, 0.48);
+          gl.uniform2f(uniforms.rotation, 0.96, -0.28);
+          gl.uniform1f(uniforms.starSpeed, seconds * 0.05);
+          gl.uniform1f(uniforms.density, 1.08);
+          gl.uniform1f(uniforms.hueShift, 204);
+          gl.uniform1f(uniforms.speed, 0.72);
+          gl.uniform2f(uniforms.mouse, smoothMouse.x, smoothMouse.y);
+          gl.uniform1f(uniforms.glowIntensity, 0.2);
+          gl.uniform1f(uniforms.saturation, 0.34);
+          gl.uniform1f(uniforms.twinkleIntensity, 0.18);
+          gl.uniform1f(uniforms.rotationSpeed, reduceMotion ? 0 : 0.025);
+          gl.uniform1f(uniforms.repulsionStrength, 1.4);
+          gl.uniform1f(uniforms.mouseActiveFactor, smoothMouse.active);
+          gl.clear(gl.COLOR_BUFFER_BIT);
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+          window.requestAnimationFrame(render);
+        }
+
+        window.requestAnimationFrame(render);
+      }
+
+      createGalaxyBackdrop();
+    </script>
+
+    <script>
+      const ideas = {
+        product: [
+          "给大学生的 AI 分镜助手",
+          "自动把聊天记录变成文章",
+          "把散乱截图整理成灵感板的工具",
+          "给独立开发者的产品命名实验室",
+          "把语音碎碎念变成行动清单",
+          "为小红书博主生成拍摄脚本",
+          "自动分析网页首屏气质的审美雷达",
+          "把读书摘录变成短视频选题库",
+          "给面试官的候选人追问生成器",
+          "一键把产品想法压缩成 MVP 计划",
+          "把会议录音变成项目复盘卡片",
+          "给自由职业者的报价解释生成器",
+          "自动从收藏夹里发现可做的小工具",
+          "把 B 站学习视频整理成练习题",
+          "给创作者的选题疲劳急救箱",
+          "自动把长文章拆成社媒连载",
+          "给播客主播的嘉宾问题地图",
+          "把 Notion 页面变成迷你课程",
+          "给情侣旅行的低冲突行程规划器",
+          "自动生成产品冷启动实验清单",
+          "把 PDF 报告变成可滑动故事卡",
+          "给设计师的客户反馈翻译器",
+          "自动检测简历里的空泛表达",
+          "给健身新手的动作纠错笔记本",
+          "把灵感照片反推成拍摄方案",
+          "给小团队的异步周会摘要员",
+          "自动把网页收藏分成项目素材包",
+          "给学生社团的活动海报文案机",
+          "把生活账单变成消费性格报告",
+          "给写作者的段落节奏检查器",
+          "自动把手账照片转成数字日历",
+          "给产品经理的用户痛点审讯室",
+          "把微信群讨论变成决策纪要",
+          "给租房人的看房风险清单",
+          "自动生成个人知识库封面摘要",
+          "给电商店主的差评修复助手",
+          "把一堆链接变成研究路线图",
+          "给摄影师的客户选片故事板",
+          "自动从日记里提取情绪趋势",
+          "给独立创作者的发布前检查台"
+        ],
+        visual: [
+          "雨夜便利店 + 胶片 + 35mm",
+          "夏天傍晚篮球场 + 抓拍",
+          "银色电梯间 + 冷光 + 时装大片",
+          "旧电脑桌面 + 像素贴纸 + 复古互联网",
+          "清晨面包店 + 蒸汽 + 柔焦",
+          "深夜地铁站 + 长曝光 + 孤独感",
+          "玻璃温室 + 雨滴 + 低饱和绿色",
+          "天台风声 + 霓虹边缘光 + 电影感",
+          "黑色美术馆 + 单束顶光 + 极简雕塑",
+          "海边停车场 + 过曝阳光 + 日系抓拍",
+          "旧书店窗边 + 灰尘光束 + 暖色胶片",
+          "凌晨洗衣房 + 蓝绿色荧光 + 对称构图",
+          "雨后柏油路 + 车灯反射 + 低机位",
+          "复古游戏厅 + 红蓝霓虹 + 颗粒感",
+          "山间民宿 + 清晨雾气 + 安静留白",
+          "白色实验室 + 透明亚克力 + 冷峻质感",
+          "黄昏渡轮 + 海风 + 电影宽画幅",
+          "老式办公室 + 百叶窗光影 + 70 年代",
+          "雪夜电话亭 + 暖光 + 孤独叙事",
+          "地下爵士酒吧 + 烟雾 + 暗红色调",
+          "陶瓷工作室 + 手部特写 + 自然光",
+          "城市天桥 + 人流拖影 + 银盐黑白",
+          "日落泳池 + 反光水纹 + 慵懒夏天",
+          "空旷展厅 + 巨幅投影 + 冷白空间",
+          "深色厨房 + 不锈钢 + 顶级餐厅后台",
+          "老居民楼楼梯间 + 午后光 + 生活感",
+          "机场候机厅 + 午夜蓝 + 远景人物",
+          "森林公路 + 车窗雨滴 + 公路片",
+          "唱片店角落 + 暖灯 + 浅景深",
+          "灰色海岸线 + 风衣 + 北欧电影感",
+          "便利店冰柜 + 绿色冷光 + 近距离抓拍",
+          "旧相机桌面 + 手写便签 + 产品静物",
+          "水泥天台 + 白衬衫 + 强烈阴影",
+          "晚自习教室 + 台灯 + 青春纪实",
+          "极简茶室 + 木纹 + 低饱和暖光",
+          "雨中公交站 + 透明伞 + 慢快门",
+          "黑色跑车内饰 + 仪表光 + 夜间质感",
+          "废弃剧院 + 红丝绒座椅 + 复古华丽",
+          "阳台植物 + 斑驳日光 + 家居杂志",
+          "电车窗外 + 模糊街景 + 旅行感"
+        ],
+        web: [
+          "宇宙风个人主页",
+          "电影感作品集",
+          "像唱片店一样的博客首页",
+          "黑金质感 AI 工具导航",
+          "极简杂志风自由职业者主页",
+          "深夜电台风格的播客页面",
+          "复古操作系统风作品目录",
+          "高端工作室官网，只有一个强烈首屏",
+          "日记本质感的阅读笔记站",
+          "艺术展票根风活动落地页",
+          "像私人档案馆一样的个人知识库",
+          "银色未来感 SaaS 首页",
+          "极简摄影展线上画廊",
+          "老报纸排版风城市指南",
+          "黑白电影字幕风个人简历",
+          "像高级菜单一样的服务介绍页",
+          "深海探测器风数据看板",
+          "手帐拼贴风灵感收藏站",
+          "建筑事务所风作品索引",
+          "夜间驾驶仪表盘风 Dashboard",
+          "像杂志目录一样的链接导航",
+          "高端香水品牌风产品页",
+          "独立游戏启动器风作品集",
+          "复古航空登机牌风活动页",
+          "极简拍卖图录风电商页",
+          "黑胶唱片封套风音乐主页",
+          "电影片场通告单风项目页",
+          "现代美术馆导览风 About 页",
+          "冷淡风 AI 助手控制台",
+          "老式终端与高级排版混合的博客",
+          "豪华酒店礼宾台风预约页",
+          "城市夜跑风运动社群主页",
+          "研究论文封面风产品发布页",
+          "精密仪器面板风设置页面",
+          "月球基地风远程团队主页",
+          "料理纪录片风餐厅官网",
+          "时装 Lookbook 风案例页",
+          "私人影院风视频作品站",
+          "地图标注风旅行故事页",
+          "安静书房风 newsletter 订阅页"
+        ]
+      };
+
+      const labels = {
+        product: "随机产品点子",
+        visual: "随机视觉创意",
+        web: "随机网页主题"
+      };
+
+      const accent = {
+        product: "#d8b35a",
+        visual: "#d596a6",
+        web: "#8fd7d2"
+      };
+
+      const ideaEl = document.querySelector("#idea");
+      const typeEl = document.querySelector("#result-type");
+      const countEl = document.querySelector("#result-count");
+      const buttons = document.querySelectorAll("button[data-kind]");
+      const queues = {
+        product: [],
+        visual: [],
+        web: []
+      };
+      const lastPicked = {
+        product: "",
+        visual: "",
+        web: ""
+      };
+      let rolls = 0;
+
+      function shuffle(list) {
+        const result = [...list];
+        for (let i = result.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [result[i], result[j]] = [result[j], result[i]];
+        }
+        return result;
+      }
+
+      function pick(kind) {
+        if (queues[kind].length === 0) {
+          queues[kind] = shuffle(ideas[kind]);
+          if (queues[kind][0] === lastPicked[kind]) {
+            queues[kind].push(queues[kind].shift());
+          }
+        }
+        const nextIdea = queues[kind].shift();
+        lastPicked[kind] = nextIdea;
+        return nextIdea;
+      }
+
+      function generate(kind) {
+        const nextIdea = pick(kind);
+        rolls += 1;
+        document.documentElement.style.setProperty("--gold", accent[kind]);
+        typeEl.textContent = labels[kind];
+        countEl.textContent = `ROLL ${String(rolls).padStart(2, "0")}`;
+        ideaEl.classList.remove("is-changing");
+        window.requestAnimationFrame(() => {
+          ideaEl.textContent = nextIdea;
+          ideaEl.classList.add("is-changing");
+        });
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => generate(button.dataset.kind));
+      });
+    </script>
+  </body>
+</html>

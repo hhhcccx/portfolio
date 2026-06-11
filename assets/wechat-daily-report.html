@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【交流1群】🌲2026IP训练营 · 2026-06-04 日报</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    background: #f5f7fa; color: #1f2937; line-height: 1.6; padding: 20px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .subtitle { color: #6b7280; font-size: 0.875rem; margin-bottom: 24px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+  .stat-card {
+    flex: 1 1 160px; background: #fff; border-radius: 10px; padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+  .stat-card .label { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: .03em; }
+  .stat-card .value { font-size: 1.5rem; font-weight: 700; margin-top: 4px; }
+  .stat-card .value.tag-list { font-size: 0.875rem; font-weight: 400; }
+  .tag {
+    display: inline-block; background: #eff6ff; color: #2563eb; font-size: 0.75rem;
+    padding: 2px 8px; border-radius: 999px; margin: 2px 2px 0 0;
+  }
+  .heat-section { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+  .heat-section h2 { font-size: 1.05rem; margin-bottom: 12px; }
+  .heat-bar {
+    display: flex; align-items: center; margin-bottom: 8px; gap: 8px;
+  }
+  .heat-bar .rank { width: 20px; font-size: 0.75rem; color: #6b7280; text-align: right; }
+  .heat-bar .title { width: 120px; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .heat-bar .bar {
+    flex: 1; height: 22px; border-radius: 6px;
+    background: linear-gradient(90deg, #dbeafe, #2563eb);
+    min-width: 8px; display: flex; align-items: center; padding: 0 8px;
+    color: #fff; font-size: 0.7rem; font-weight: 600;
+    justify-content: flex-end; transition: width .3s;
+  }
+  .topics-section { margin-bottom: 20px; }
+  details {
+    background: #fff; border-radius: 10px; margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden;
+  }
+  details summary {
+    padding: 14px 16px; cursor: pointer; font-weight: 600;
+    font-size: 0.95rem; position: relative;
+    list-style: none;
+  }
+  details summary::after {
+    content: "▾"; position: absolute; right: 16px; top: 14px; transition: transform .2s;
+  }
+  details[open] summary::after { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
+  .topic-body { padding: 0 16px 16px; }
+  .meta-row { display: flex; gap: 16px; font-size: 0.8rem; color: #6b7280; margin-bottom: 12px; }
+  .key-points {
+    background: #f0fdf4; border-left: 4px solid #22c55e; padding: 10px 14px;
+    border-radius: 0 6px 6px 0; margin-bottom: 12px;
+  }
+  .key-points li { margin-bottom: 4px; font-size: 0.85rem; }
+  .timeline { max-height: 300px; overflow-y: auto; font-size: 0.82rem; }
+  .tl-item { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid #f3f4f6; }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-time { color: #9ca3af; white-space: nowrap; min-width: 48px; }
+  .tl-speaker { color: #2563eb; font-weight: 600; white-space: nowrap; min-width: 56px; }
+  .tl-content { color: #374151; }
+  .empty-state { text-align: center; padding: 48px 16px; color: #9ca3af; }
+  /* ── 森林发言 ── */
+  .forest-section { background: #f0fdf4; border-radius: 10px; padding: 16px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border-left: 4px solid #22c55e; }
+  .forest-section h2 { font-size: 1.05rem; margin-bottom: 10px; color: #15803d; }
+  .forest-item { display: flex; gap: 8px; padding: 3px 0; font-size: 0.85rem; border-bottom: 1px solid #dcfce7; }
+  .forest-item:last-child { border-bottom: none; }
+  .forest-time { color: #86efac; white-space: nowrap; min-width: 48px; font-size: 0.75rem; }
+  .forest-content { color: #166534; }
+  /* ── 实操案例 ── */
+  .case-card { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border-left: 4px solid #8b5cf6; }
+  .case-card h3 { font-size: 0.95rem; margin-bottom: 8px; color: #6d28d9; }
+  .case-grid { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 0.83rem; }
+  .case-label { color: #6b7280; white-space: nowrap; }
+  .case-value { color: #1f2937; }
+  .case-tag { display: inline-block; background: #f5f3ff; color: #7c3aed; font-size: 0.7rem; padding: 1px 8px; border-radius: 999px; margin: 1px; }
+  /* ── 工具推荐 ── */
+  .tool-card { background: #fffbeb; border-radius: 10px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border-left: 4px solid #f59e0b; }
+  .tool-card h3 { font-size: 0.9rem; margin-bottom: 4px; color: #b45309; }
+  .tool-meta { font-size: 0.78rem; color: #6b7280; }
+  .tool-price { display: inline-block; background: #fef3c7; color: #92400e; font-size: 0.7rem; padding: 1px 8px; border-radius: 999px; margin-left: 4px; }
+  /* ── 商业机会 ── */
+  .opp-card { background: #fef2f2; border-radius: 10px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border-left: 4px solid #ef4444; }
+  .opp-card h3 { font-size: 0.9rem; margin-bottom: 4px; color: #b91c1c; }
+  .opp-meta { font-size: 0.8rem; color: #374151; }
+  /* ── 今日总结 ── */
+  .summary-box { background: linear-gradient(135deg, #1e3a5f, #2563eb); border-radius: 10px; padding: 16px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(37,99,235,.2); }
+  .summary-box h2 { font-size: 1rem; margin-bottom: 8px; color: #93c5fd; }
+  .summary-box p { color: #fff; font-size: 0.9rem; line-height: 1.7; }
+  /* ── 区块标题 ── */
+  .section-title { font-size: 1.05rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .section-title .icon { font-size: 1.2rem; }
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .stat-card { flex: 1 1 100%; }
+    .heat-bar .title { width: 80px; }
+    .meta-row { flex-wrap: wrap; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>【交流1群】🌲2026IP训练营 · 2026-06-04 日报</h1>
+  <p class="subtitle">生成时间: 2026-06-04 22:16</p>
+  <div class="summary-box">
+    <h2>📋 今日速览</h2>
+    <p>今天群友分享了AI视频/生图实战经验、自动化工作流案例，以及低价购买AI账号的技巧。</p>
+  </div>  <div class="stats">
+    <div class="stat-card">
+      <div class="label">消息总数</div>
+      <div class="value">1238条</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">活跃成员</div>
+      <div class="value">51人</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">时间跨度</div>
+      <div class="value">00:01~22:12</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">热词</div>
+      <div class="value tag-list"><span class="tag">AI视频</span><span class="tag">提示词</span><span class="tag">codex重置</span><span class="tag">扁平足</span><span class="tag">低客单价</span></div>
+    </div>
+  </div>  <div class="forest-section">
+    <h2>🌳 树林今日发言</h2>
+    <div class="forest-item">
+      <span class="forest-time">00:21</span>
+      <span class="forest-content">好评目.用豆包做的视频</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">11:44</span>
+      <span class="forest-content">树林评价Moon的视频作品&#x27;感觉不错&#x27;</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">12:10</span>
+      <span class="forest-content">树林对果粒的自动化生图流程表示&#x27;哈哈哈&#x27;</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">18:42</span>
+      <span class="forest-content">赞扬Creech生成的赛博朋克风格图片很美</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">19:58</span>
+      <span class="forest-content">评论吴越的暗黑西游短片不错可以</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">19:59</span>
+      <span class="forest-content">@果粒 让其查看吴越的短片</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">20:34</span>
+      <span class="forest-content">只要想法一致的，就是家豪</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">20:35</span>
+      <span class="forest-content">只要想发一张的就是家豪</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">20:43</span>
+      <span class="forest-content">夸Absinth生图好看</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">21:20</span>
+      <span class="forest-content">发语音指导</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">21:21</span>
+      <span class="forest-content">批评成员什么都问，建议用豆包免费AI</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">21:35</span>
+      <span class="forest-content">提醒跑通自动化后要提升内容质量</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">21:37</span>
+      <span class="forest-content">建议发图合并或叠图，避免刷屏</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">21:59</span>
+      <span class="forest-content">点评胡嘉炜写真生图第一张好看</span>
+    </div>    <div class="forest-item">
+      <span class="forest-time">22:07</span>
+      <span class="forest-content">对胡嘉炜说不错</span>
+    </div>
+  </div>  <div style="margin-bottom:20px">
+    <div class="section-title"><span class="icon">💡</span> 实操案例</div>
+  <div class="case-card">
+    <h3>📌 卖AI头像提示词赚100块</h3>
+    <div class="case-grid">
+      <span class="case-label">发起人</span><span class="case-value">Yana-杭州-电商&amp;ai</span>
+      <span class="case-label">背景</span><span class="case-value">Yana在X上看到头像提示词，顺手在抖音发布，发现很多人不知道AI工具，存在信息差。</span>
+      <span class="case-label">经过</span><span class="case-value">发布后很多人问，就顺势引流到微信卖提示词，9.9元一份，卖了约10份共100元。</span>
+      <span class="case-label">操作</span><span class="case-value">抖音发布内容，主页留微信号，引流到微信私聊，先付款后发文件。</span>
+      <span class="case-label">工具</span><span class="case-value"><span class="case-tag">抖音</span><span class="case-tag">微信</span></span>
+      <span class="case-label">成果</span><span class="case-value">赚了100元，但遇到低质量客户要求先货后款，体验不佳。</span>
+      <span class="case-label">启发</span><span class="case-value">低客单价直接自动发货，高客单价做知识付费，筛选客户避免糟心。</span>
+    </div>
+  </div>
+  <div class="case-card">
+    <h3>📌 自动化生图流程</h3>
+    <div class="case-grid">
+      <span class="case-label">发起人</span><span class="case-value">果粒</span>
+      <span class="case-label">背景</span><span class="case-value">果粒想提高AI生图效率，批量生成不同风格的图像</span>
+      <span class="case-label">经过</span><span class="case-value">看到Rheos的分享后，决定用脚本控制浏览器实现自动化</span>
+      <span class="case-label">操作</span><span class="case-value">在codex中发&#x27;AI时代&#x27;四个字，脚本自动打开浏览器，将提示词分为常规、活泼/张力、情绪三类，6个窗口同时抽卡</span>
+      <span class="case-label">工具</span><span class="case-value"><span class="case-tag">codex</span><span class="case-tag">自定义脚本</span></span>
+      <span class="case-label">成果</span><span class="case-value">实现6窗口并行抽卡，大幅提升生图效率</span>
+      <span class="case-label">启发</span><span class="case-value">探索自动化批量处理可极大提升工作效率</span>
+    </div>
+  </div>
+  <div class="case-card">
+    <h3>📌 用wx-cli生成结构化HTML日报</h3>
+    <div class="case-grid">
+      <span class="case-label">发起人</span><span class="case-value">樂-哈尔滨-学习 AI</span>
+      <span class="case-label">背景</span><span class="case-value">樂-哈尔滨-学习 AI 希望自动化生成日报</span>
+      <span class="case-label">经过</span><span class="case-value">找到wx-cli工具后，复制网址给ChatGPT，让其一步步指导安装和使用</span>
+      <span class="case-label">操作</span><span class="case-value">使用wx-cli，配合ChatGPT的指导，生成结构化HTML日报</span>
+      <span class="case-label">工具</span><span class="case-value"><span class="case-tag">wx-cli</span><span class="case-tag">ChatGPT</span></span>
+      <span class="case-label">成果</span><span class="case-value">成功生成结构化HTML日报</span>
+      <span class="case-label">启发</span><span class="case-value">善用AI作为教学工具，可快速上手新技能</span>
+    </div>
+  </div>
+  <div class="case-card">
+    <h3>📌 用1元即梦制作视频</h3>
+    <div class="case-grid">
+      <span class="case-label">发起人</span><span class="case-value">Absinth-广东-用ai赚到钱</span>
+      <span class="case-label">背景</span><span class="case-value">Absinth想低成本测试AI视频生成效果</span>
+      <span class="case-label">经过</span><span class="case-value">使用即梦平台，仅花1元就完成视频生成</span>
+      <span class="case-label">操作</span><span class="case-value">输入提示词到即梦，生成视频并分享到群</span>
+      <span class="case-label">工具</span><span class="case-value"><span class="case-tag">即梦</span></span>
+      <span class="case-label">成果</span><span class="case-value">成功生成一段视频，成本极低</span>
+      <span class="case-label">启发</span><span class="case-value">低成本试错是入门AI视频的好方法</span>
+    </div>
+  </div>
+  <div class="case-card">
+    <h3>📌 暗黑西游AI短片制作</h3>
+    <div class="case-grid">
+      <span class="case-label">发起人</span><span class="case-value">吴越-济南</span>
+      <span class="case-label">背景</span><span class="case-value">灵感来自黑神话和悟空传，想创作孙悟空被抹去记忆后觉醒的故事</span>
+      <span class="case-label">经过</span><span class="case-value">吴越使用AI工具生成画面，用Codex和自己分别剪辑两个版本</span>
+      <span class="case-label">操作</span><span class="case-value">生成画面后剪辑，尝试Codex自动剪辑和手动剪辑对比，注意保持人物一致性和画面流畅性</span>
+      <span class="case-label">工具</span><span class="case-value"><span class="case-tag">Codex</span><span class="case-tag">剪映</span></span>
+      <span class="case-label">成果</span><span class="case-value">发布第一版毛坯短片，获得树林认可，成员建议加音乐、改16:9比例</span>
+      <span class="case-label">启发</span><span class="case-value">AI短片创作门槛降低，但手动剪辑仍比自动剪辑效果更好，需要不断迭代</span>
+    </div>
+  </div>
+  <div class="case-card">
+    <h3>📌 AI视频生成技巧实战</h3>
+    <div class="case-grid">
+      <span class="case-label">发起人</span><span class="case-value">年年-湖北-干爆ai</span>
+      <span class="case-label">背景</span><span class="case-value">年年尝试类似&#x27;科比在恒水中学&#x27;风格的视频，遇到人物过审和首尾帧问题</span>
+      <span class="case-label">经过</span><span class="case-value">分享使用三视图+场景图+精细时间线提示词的方法，避免滥用首尾帧</span>
+      <span class="case-label">操作</span><span class="case-value">每0.5秒给一个提示词，描述人物动作和环境，首尾帧仅用于衔接不同片段</span>
+      <span class="case-label">工具</span><span class="case-value"><span class="case-tag">AI视频生成工具</span><span class="case-tag">提示词工程</span></span>
+      <span class="case-label">成果</span><span class="case-value">输出高质量连贯视频，但科比人物因版权未过审，需用邪修法</span>
+      <span class="case-label">启发</span><span class="case-value">精细时间线控制比首尾帧更有效，但需注意版权限制</span>
+    </div>
+  </div>
+  <div class="case-card">
+    <h3>📌 胡嘉炜结构化写真生图</h3>
+    <div class="case-grid">
+      <span class="case-label">发起人</span><span class="case-value">胡嘉炜</span>
+      <span class="case-label">背景</span><span class="case-value">为提升AI写真生成质量和效率</span>
+      <span class="case-label">经过</span><span class="case-value">解构写真要素，根据客户要求拼接并抽卡</span>
+      <span class="case-label">操作</span><span class="case-value">提炼滤镜、光影、动作、表情、穿搭等要素形成素材库</span>
+      <span class="case-label">工具</span><span class="case-value"><span class="case-tag">AI生图工具</span><span class="case-tag">文档</span></span>
+      <span class="case-label">成果</span><span class="case-value">生图效果好，获得树林肯定和多人转账认可</span>
+      <span class="case-label">启发</span><span class="case-value">结构化素材库+抽卡可稳定产出高质量写真图</span>
+    </div>
+  </div>
+  <div class="case-card">
+    <h3>📌 Absinth生图</h3>
+    <div class="case-grid">
+      <span class="case-label">发起人</span><span class="case-value">Absinth-广东-用ai赚到钱</span>
+      <span class="case-label">背景</span><span class="case-value">尝试生成高质量AI图像</span>
+      <span class="case-label">经过</span><span class="case-value">使用提示词抽卡生成，10张出1张满意</span>
+      <span class="case-label">操作</span><span class="case-value">编写详细提示词：史诗巨龙+悬崖人类剪影</span>
+      <span class="case-label">工具</span><span class="case-value"><span class="case-tag">AI生图工具</span></span>
+      <span class="case-label">成果</span><span class="case-value">生成一张极佳的壁纸级图片，被多人夸赞</span>
+      <span class="case-label">启发</span><span class="case-value">高质量生图需要好的提示词和多次抽卡</span>
+    </div>
+  </div>
+  </div>  <div style="margin-bottom:20px">
+    <div class="section-title"><span class="icon">🔧</span> 工具推荐</div>
+  <div class="tool-card">
+    <h3>🛠 香蕉模型 <span class="tool-price">免费/付费?</span></h3>
+    <div class="tool-meta">
+      AI视频生成，提升画面质感<br>
+      推荐人：年年  湖北  干爆ai
+      <br>注意：配合完美的人物三视图和场景图使用效果更佳。
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 Claude Opus Max <span class="tool-price">免费额度</span></h3>
+    <div class="tool-meta">
+      AI编程/自动化，重置额度后可免费使用<br>
+      推荐人：期善Mic-深圳-自动视频
+      <br>注意：近期Codex频繁重置额度，建议立即使用。
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 AI生成申诉信 <span class="tool-price">免费</span></h3>
+    <div class="tool-meta">
+      谷歌账号解封<br>
+      推荐人：爱喝咖啡の狐狸
+      <br>注意：新建账号被封更容易解封，用英文申诉更快。
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 Claude Design Skill <span class="tool-price">免费</span></h3>
+    <div class="tool-meta">
+      网站设计，将Claude官方提示词封装成Skill，人人可做顶级网站设计师<br>
+      推荐人：周燎原FireChou
+      <br>注意：需配合Claude使用，注意提示词泄露风险
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 Gemini Pro (闲鱼购买) <span class="tool-price">约40-50元/年</span></h3>
+    <div class="tool-meta">
+      AI对话、推理、图片生成<br>
+      推荐人：吴越-济南
+      <br>注意：有封号风险，曾因手机号验证被封，但可解封；结合Google Flow可无限生图
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 即梦 (LibTV/OiiOii/即梦) <span class="tool-price">低成本（如1元可试）</span></h3>
+    <div class="tool-meta">
+      AI视频生成<br>
+      推荐人：Absinth-广东-用ai赚到钱、Creech
+      <br>注意：适合低成本试水，效果尚可
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 wx-cli <span class="tool-price">免费</span></h3>
+    <div class="tool-meta">
+      微信自动化和数据提取<br>
+      推荐人：樂-哈尔滨-学习 AI
+      <br>注意：有被微信警告的风险，使用时需谨慎
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 seedans2.0 <span class="tool-price">较贵</span></h3>
+    <div class="tool-meta">
+      视频生成<br>
+      推荐人：林-福州-跑完ai工作流
+      <br>注意：生成视频质量最强，但成本高，有肖像保护限制
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 notebooklm <span class="tool-price">免费（与Gemini绑定）</span></h3>
+    <div class="tool-meta">
+      基于文档的AI问答<br>
+      推荐人：吴越-济南
+      <br>注意：Gemini用户强力推荐，适合处理文档
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 花生AI <span class="tool-price">免费（测试版）</span></h3>
+    <div class="tool-meta">
+      AI视频生成<br>
+      推荐人：Creech
+      <br>注意：可生成类似B站口播风格的视频
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 Typeless <span class="tool-price">免费（无特殊福利）</span></h3>
+    <div class="tool-meta">
+      AI工具邀请码分享<br>
+      推荐人：栩栩-上海-赚两万
+      <br>注意：邀请码NVLWLYR，暂无实际用途
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 可灵API <span class="tool-price">100元API额度（已购买）</span></h3>
+    <div class="tool-meta">
+      视频生成工作流自动化<br>
+      推荐人：灵
+      <br>注意：遇到API调用报错，客服需3个工作日回复，建议试Seedance
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 cx-cli <span class="tool-price">免费</span></h3>
+    <div class="tool-meta">
+      微信聊天记录读取（仅Mac）<br>
+      推荐人：爱喝咖啡の狐狸
+      <br>注意：Mac版可通过获取key解包本地文件，一次获取终身受用；Windows版可能存在封号风险
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 Trae <span class="tool-price">免费</span></h3>
+    <div class="tool-meta">
+      公众号推文写作<br>
+      推荐人：糖糕烤熟了
+      <br>注意：可直接生成公众号推文内容
+    </div>
+  </div>  <div class="tool-card">
+    <h3>🛠 豆包 <span class="tool-price">免费</span></h3>
+    <div class="tool-meta">
+      免费AI问答，解决基础问题<br>
+      推荐人：树林
+      <br>注意：鼓励成员遇到问题先问豆包
+    </div>
+  </div>
+  </div>  <div style="margin-bottom:20px">
+    <div class="section-title"><span class="icon">💵</span> 商业机会</div>
+  <div class="opp-card">
+    <h3>💰 AI短剧/短视频生成服务</h3>
+    <div class="opp-meta">
+      适用场景：短剧市场火热，AI生成视频简单但火起来难，可提供生成服务或教学。
+      <br>操作方式：使用香蕉模型等工具，生成画面质感好的短剧视频，培训或接单。
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 低客单价AI提示词自动发货</h3>
+    <div class="opp-meta">
+      适用场景：抖音下沉市场巨大，很多人不知道AI工具。
+      <br>操作方式：在抖音发布提示词相关视频，引流到微信，低客单价用自动发货（如小店铺），避免人工纠纷。
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 高客单价知识付费课程</h3>
+    <div class="opp-meta">
+      适用场景：筛选有付费意愿的高价值客户，提供系统课程。
+      <br>操作方式：免费资料引流，私域转化高价课程，服务高端人群。
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 自动化生图服务</h3>
+    <div class="opp-meta">
+      适用场景：为个人或小企业批量生成不同风格的AI图片
+      <br>操作方式：使用脚本控制浏览器并行抽卡，提供分类提示词服务
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 低门槛AI视频代制作</h3>
+    <div class="opp-meta">
+      适用场景：客户想要视频但不会AI，用即梦等低成本工具帮做
+      <br>操作方式：用即梦或seedans2.0生成视频，收费按条或按秒
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 Claude Design Skill教学/代装</h3>
+    <div class="opp-meta">
+      适用场景：用户想学网站设计但不懂编程
+      <br>操作方式：出售Claude Design Skill安装包或开设教学课程
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 微信日报自动化工具</h3>
+    <div class="opp-meta">
+      适用场景：群主或管理员需要每日群聊总结
+      <br>操作方式：使用wx-cli或类似工具提取消息，用AI生成结构化日报，可收费或提供SaaS服务
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 宠物数字桌宠及GIF表情包服务</h3>
+    <div class="opp-meta">
+      适用场景：宠物主人与宠物异地，想在电脑上互动或制作表情包
+      <br>操作方式：开发将宠物照片转化为2D/3D桌宠或GIF表情包的软件，可定制动作，付费意愿高
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 AI视频短片创作与分发</h3>
+    <div class="opp-meta">
+      适用场景：短视频平台（B站、抖音）对创意AI短片需求大
+      <br>操作方式：制作类似&#x27;科比在恒水中学&#x27;风格的搞笑AI视频，通过精细时间线控制质量，快速产出
+    </div>
+  </div>  <div class="opp-card">
+    <h3>💰 AI写真定制</h3>
+    <div class="opp-meta">
+      适用场景：为个人客户定制AI写真，提供多种风格素材库
+      <br>操作方式：解构写真要素，收集反馈，用素材库+抽卡生成
+    </div>
+  </div>
+  </div>  <div class="heat-section">
+    <h2>话题热度排名</h2>
+    <div class="heat-bar">
+      <div class="rank">1</div>
+      <div class="title" title="AI视频创作与技巧讨论">AI视频创作与技巧讨论</div>
+      <div class="bar" style="width:95%">95 8人 (年年-湖北-干爆ai,周燎原FireChou,爱喝咖啡の狐狸…)</div>
+    </div>
+    <div class="heat-bar">
+      <div class="rank">2</div>
+      <div class="title" title="AI生图技巧与展示">AI生图技巧与展示</div>
+      <div class="bar" style="width:95%">95 11人 (Absinth-广东-用ai赚到钱,胡嘉炜,树林…)</div>
+    </div>
+    <div class="heat-bar">
+      <div class="rank">3</div>
+      <div class="title" title="AI视频生成工具与工作流讨论">AI视频生成工具与工作流讨论</div>
+      <div class="bar" style="width:90%">90 8人 (Moon🌙-福建-学ai提审美,炸鸡块-佛山- 爆款文案生成工作流,Creech…)</div>
+    </div>
+    <div class="heat-bar">
+      <div class="rank">4</div>
+      <div class="title" title="Codex额度重置与使用讨论">Codex额度重置与使用讨论</div>
+      <div class="bar" style="width:85%">85 10人 (吴越-济南,泽央,云村-上海-挣到第一笔钱…)</div>
+    </div>
+    <div class="heat-bar">
+      <div class="rank">5</div>
+      <div class="title" title="AI生图技巧与保持人脸一致性">AI生图技巧与保持人脸一致性</div>
+      <div class="bar" style="width:85%">85 9人 (辻弌-合肥-完整走完第一个闭环,云村-上海-挣到第一笔钱,十早…)</div>
+    </div>
+    <div class="heat-bar">
+      <div class="rank">6</div>
+      <div class="title" title="AI短剧/视频生成与审美提升">AI短剧/视频生成与审美提升</div>
+      <div class="bar" style="width:80%">80 12人 (年年  湖北  干爆ai,目.,冰…)</div>
+    </div>
+    <div class="heat-bar">
+      <div class="rank">7</div>
+      <div class="title" title="Claude Codex与自动化流程">Claude Codex与自动化流程</div>
+      <div class="bar" style="width:80%">80 6人 (周燎原FireChou,年年  湖北  干爆ai,果粒…)</div>
+    </div>
+  </div>  <div class="topics-section">
+  <details>
+    <summary>AI视频创作与技巧讨论</summary>
+    <div class="topic-body">
+      <div class="meta-row">
+        <span>热度: 95</span>
+        <span>参与: 8人</span>
+        <span>成员: 年年-湖北-干爆ai、周燎原FireChou、爱喝咖啡の狐狸、云村-上海-挣到第一笔钱、泽央、Creech、吴越-济南、夜曲</span>
+      </div>      <div class="key-points">
+        <ul><li>精细时间线提示词比首尾帧更有效</li><li>三视图+场景图保持人物一致性</li><li>每0.5秒一个提示词控制动作</li><li>视频模型无上下文记忆需留衔接空间</li><li>人物版权可能导致不过审</li></ul>
+      </div>      <div class="timeline">
+        <strong style="font-size:0.8rem;color:#6b7280">时间线</strong>
+        <div class="tl-item">
+          <span class="tl-time">20:08</span>
+          <span class="tl-speaker">年年-湖北-干爆ai</span>
+          <span class="tl-content">首针和尾针放上去，视频就被固定好了，很难生成想要的东西</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">20:10</span>
+          <span class="tl-speaker">年年-湖北-干爆ai</span>
+          <span class="tl-content">直接写人物第几秒第几秒怎么怎么动，第几秒到第几秒怎么怎么动，这个一定要分到0.5秒</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">20:12</span>
+          <span class="tl-speaker">泽央</span>
+          <span class="tl-content">视频模型是没有上下文记忆的，每段视频的生成对它来说是独立的任务</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">19:54</span>
+          <span class="tl-speaker">吴越-济南</span>
+          <span class="tl-content">大家好呀，我做了个暗黑西游的短片,第一集先放出来</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">20:26</span>
+          <span class="tl-speaker">年年-湖北-干爆ai</span>
+          <span class="tl-content">我服了，科比人物居然不过审</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">20:27</span>
+          <span class="tl-speaker">K-ON！-嘉兴-找到自己的节奏</span>
+          <span class="tl-content">之前是有说过禁止使用ai生成科比</span>
+        </div>
+      </div>
+    </div>
+  </details>
+  <details>
+    <summary>AI生图技巧与展示</summary>
+    <div class="topic-body">
+      <div class="meta-row">
+        <span>热度: 95</span>
+        <span>参与: 11人</span>
+        <span>成员: Absinth-广东-用ai赚到钱、胡嘉炜、树林、弈思、周燎原FireChou、云村-上海-挣到第一笔钱、泽央、辻弌-合肥-完整走完第一个闭环、灵、阿锐—重庆—短视频编导、明振</span>
+      </div>      <div class="key-points">
+        <ul><li>胡嘉炜分享结构化素材库写真实战</li><li>Absinth通过抽卡生成高质量图片</li><li>树林点评图片并强调内容质量</li></ul>
+      </div>      <div class="timeline">
+        <strong style="font-size:0.8rem;color:#6b7280">时间线</strong>
+        <div class="tl-item">
+          <span class="tl-time">21:26</span>
+          <span class="tl-speaker">Absinth-广东-用ai赚到钱</span>
+          <span class="tl-content">总算有一张满意的了</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">21:29</span>
+          <span class="tl-speaker">Absinth-广东-用ai赚到钱</span>
+          <span class="tl-content">提示词（史诗云龙）</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">21:55</span>
+          <span class="tl-speaker">胡嘉炜</span>
+          <span class="tl-content">我的生图思路是解构写真，根据客户要求拼接要素然后抽卡</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">21:59</span>
+          <span class="tl-speaker">树林</span>
+          <span class="tl-content">第一张还挺好看的</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">22:03</span>
+          <span class="tl-speaker">弈思</span>
+          <span class="tl-content">今天我也给家里人搞了搞</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">22:11</span>
+          <span class="tl-speaker">辻弌-合肥-完整走完第一个闭环</span>
+          <span class="tl-content">超宽幅电影构图提示词</span>
+        </div>
+      </div>
+    </div>
+  </details>
+  <details>
+    <summary>AI视频生成工具与工作流讨论</summary>
+    <div class="topic-body">
+      <div class="meta-row">
+        <span>热度: 90</span>
+        <span>参与: 8人</span>
+        <span>成员: Moon🌙-福建-学ai提审美、炸鸡块-佛山- 爆款文案生成工作流、Creech、林-福州-跑完ai工作流、康泰克斯、年年  湖北  干爆ai、Absinth-广东-用ai赚到钱、QANiR</span>
+      </div>      <div class="key-points">
+        <ul><li>推荐即梦、LibTV、OiiOii等视频生成平台</li><li>seedans2.0质量最强但贵且有肖像保护</li><li>专业工作流：写设定→做资产→做分镜→生成画面→生成视频→剪辑</li><li>低成本试错：用1元即梦就能生成视频</li></ul>
+      </div>      <div class="timeline">
+        <strong style="font-size:0.8rem;color:#6b7280">时间线</strong>
+        <div class="tl-item">
+          <span class="tl-time">10:54</span>
+          <span class="tl-speaker">炸鸡块-佛山- 爆款文案生成工作流</span>
+          <span class="tl-content">大家ai 视频都是用什么来生成的呀</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">10:56</span>
+          <span class="tl-speaker">Moon🌙-福建-学ai提审美</span>
+          <span class="tl-content">专业点的工作流：先写设定 → 再做资产 → 再做分镜 → 再生成画面 → 再生成视频 → 最后剪辑包装。</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">11:38</span>
+          <span class="tl-speaker">泽央</span>
+          <span class="tl-content">Google的omini确实挺不错</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">13:28</span>
+          <span class="tl-speaker">康泰克斯</span>
+          <span class="tl-content">大家好！我今天打算开始尝试视频生成，现在核心视频模型用的比较多的是gpt吗？（最近半年只用了claude）</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">13:36</span>
+          <span class="tl-speaker">林-福州-跑完ai工作流</span>
+          <span class="tl-content">然后现在最好用的模型是（也是最贵的）seedans2.0</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">14:22</span>
+          <span class="tl-speaker">Absinth-广东-用ai赚到钱</span>
+          <span class="tl-content">拿一块钱即梦做的</span>
+        </div>
+      </div>
+    </div>
+  </details>
+  <details>
+    <summary>Codex额度重置与使用讨论</summary>
+    <div class="topic-body">
+      <div class="meta-row">
+        <span>热度: 85</span>
+        <span>参与: 10人</span>
+        <span>成员: 吴越-济南、泽央、云村-上海-挣到第一笔钱、李奇、期善Mic-深圳-自动视频、不上中大不改名、周燎原FireChou、伊曼努尔-西安-用ai变现、年年  湖北  干爆ai、谦-泉州-进军ai</span>
+      </div>      <div class="key-points">
+        <ul><li>Codex频繁重置额度，今日多位成员发现重置</li><li>安装位置建议C盘以便使用computer use功能</li><li>重置原因可能是用户数达到100万</li></ul>
+      </div>      <div class="timeline">
+        <strong style="font-size:0.8rem;color:#6b7280">时间线</strong>
+        <div class="tl-item">
+          <span class="tl-time">09:05</span>
+          <span class="tl-speaker">吴越-济南</span>
+          <span class="tl-content">这是又重置了吗[捂脸]</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">09:08</span>
+          <span class="tl-speaker">谦-泉州-进军ai</span>
+          <span class="tl-content">一般是周日刷新，今天这么好嘛</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">09:20</span>
+          <span class="tl-speaker">周燎原FireChou</span>
+          <span class="tl-content">兄弟们，你们 codex 都是在 mirosoft 商店安装的吗？是不是都装在 c 盘？</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">09:24</span>
+          <span class="tl-speaker">谦-泉州-进军ai</span>
+          <span class="tl-content">有一个功能是computer use控制你的电脑，前提就是装c盘里面</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">09:57</span>
+          <span class="tl-speaker">云村-上海-挣到第一笔钱</span>
+          <span class="tl-content">这个怎么更新了</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">09:58</span>
+          <span class="tl-speaker">李奇</span>
+          <span class="tl-content">奥特曼说过codex每新增100万用户就会重置额度</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">10:01</span>
+          <span class="tl-speaker">期善Mic-深圳-自动视频</span>
+          <span class="tl-content">之前前哨站经常有战友说莫名其妙重置额度了，频率高</span>
+        </div>
+      </div>
+    </div>
+  </details>
+  <details>
+    <summary>AI生图技巧与保持人脸一致性</summary>
+    <div class="topic-body">
+      <div class="meta-row">
+        <span>热度: 85</span>
+        <span>参与: 9人</span>
+        <span>成员: 辻弌-合肥-完整走完第一个闭环、云村-上海-挣到第一笔钱、十早、w、瓜条-安徽、周燎原FireChou、Absinth-广东-用ai赚到钱、杨奇好、林-福州-跑完ai工作流</span>
+      </div>      <div class="key-points">
+        <ul><li>GPT经常改脸，需加限制词或重新开对话</li><li>提供多角度照片可提高相似度</li><li>只发一张正脸可能更稳定</li><li>分享固定面部特征的详细提示词示例</li></ul>
+      </div>      <div class="timeline">
+        <strong style="font-size:0.8rem;color:#6b7280">时间线</strong>
+        <div class="tl-item">
+          <span class="tl-time">14:42</span>
+          <span class="tl-speaker">辻弌-合肥-完整走完第一个闭环</span>
+          <span class="tl-content">大家做图的时候是怎么限制gpt不让他改脸的，我加了限制词后还是会出现改脸的问题</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">14:43</span>
+          <span class="tl-speaker">十早</span>
+          <span class="tl-content">给它发目标人物多角度不同光线的照片</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">14:44</span>
+          <span class="tl-speaker">十早</span>
+          <span class="tl-content">严格保留上传照片中人物的100%面部特征和发型：五官比例、脸型轮廓、眼型、鼻型、唇形、肤色、发色、发量、刘海形状、发型轮廓、耳朵位置。仅替换服装、背景、构图和杂志排版元素。</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">15:47</span>
+          <span class="tl-speaker">瓜条-安徽</span>
+          <span class="tl-content">我试的多角度效果不好，我觉得还是只给他发一张正脸，稳定些</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">15:49</span>
+          <span class="tl-speaker">瓜条-安徽</span>
+          <span class="tl-content">要是出的图不想自己，在发一次自己的照片，然后和他说&#x27;你这都不像我，重新参考一下&#x27;</span>
+        </div>
+      </div>
+    </div>
+  </details>
+  <details>
+    <summary>AI短剧/视频生成与审美提升</summary>
+    <div class="topic-body">
+      <div class="meta-row">
+        <span>热度: 80</span>
+        <span>参与: 12人</span>
+        <span>成员: 年年  湖北  干爆ai、目.、冰、Aurora Muta²⁵、辻弌-合肥-完整走完第一个闭环、期善Mic-深圳-自动视频、鹤川、泽央、Moon🌙-福建-学ai提审美、爱喝咖啡の狐狸、漠奕-广东-做一个解决需求的ai、Hao-哈尔滨-过六级</span>
+      </div>      <div class="key-points">
+        <ul><li>短剧视频生成简单但火起来难</li><li>画面质感依赖模型如香蕉模型</li><li>场景和人物描述要完美、画风一致</li><li>泽央分享提示词文档</li></ul>
+      </div>      <div class="timeline">
+        <strong style="font-size:0.8rem;color:#6b7280">时间线</strong>
+        <div class="tl-item">
+          <span class="tl-time">00:19</span>
+          <span class="tl-speaker">年年  湖北  干爆ai</span>
+          <span class="tl-content">短剧视频现在生成简单 火起来很难哦</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">00:26</span>
+          <span class="tl-speaker">泽央</span>
+          <span class="tl-content">前两天整理的，主要是针对叙事类ai短片的制作。关注点其实就是通过调整光效和画面整体色调，来提升整体画面的质感</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">00:26</span>
+          <span class="tl-speaker">泽央</span>
+          <span class="tl-content">[文件] 提升画面质感提示词.docx</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">00:29</span>
+          <span class="tl-speaker">年年  湖北  干爆ai</span>
+          <span class="tl-content">我推荐香蕉模型</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">08:40</span>
+          <span class="tl-speaker">年年  湖北  干爆ai</span>
+          <span class="tl-content">最近想提升自己的审美能力</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">10:50</span>
+          <span class="tl-speaker">Moon🌙-福建-学ai提审美</span>
+          <span class="tl-content">做了个抽象丑视频。GPT给脚本Codex执行我负责破防</span>
+        </div>
+      </div>
+    </div>
+  </details>
+  <details>
+    <summary>Claude Codex与自动化流程</summary>
+    <div class="topic-body">
+      <div class="meta-row">
+        <span>热度: 80</span>
+        <span>参与: 6人</span>
+        <span>成员: 周燎原FireChou、年年  湖北  干爆ai、果粒、Absinth-广东-用ai赚到钱、辻弌-合肥-完整走完第一个闭环、吴越-济南</span>
+      </div>      <div class="key-points">
+        <ul><li>果粒通过codex脚本实现自动化生图：6窗口同时抽卡</li><li>codex可配合claude完成复杂工作流</li><li>Claude Design Skill可快速制作网站</li><li>有用户反映wx-cli被警告</li></ul>
+      </div>      <div class="timeline">
+        <strong style="font-size:0.8rem;color:#6b7280">时间线</strong>
+        <div class="tl-item">
+          <span class="tl-time">11:19</span>
+          <span class="tl-speaker">周燎原FireChou</span>
+          <span class="tl-content">【我把 Claude Design 做成了 Skill，人人都能成为顶级网站设计师】</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">12:10</span>
+          <span class="tl-speaker">Absinth-广东-用ai赚到钱</span>
+          <span class="tl-content">果粒: 哥！！！跟群里面的人混是真能学到东西啊 原来可以写一个脚本直接操控浏览器</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">13:36</span>
+          <span class="tl-speaker">何小楼</span>
+          <span class="tl-content">我昨天用CLI 被警告了。</span>
+        </div>        <div class="tl-item">
+          <span class="tl-time">14:50</span>
+          <span class="tl-speaker">xdy</span>
+          <span class="tl-content">这是我做的每天能定时九点让cc读取群聊消息，然后总结出来做成一个网页</span>
+        </div>
+      </div>
+    </div>
+  </details>
+  </div>
+</div>
+</body>
+</html>

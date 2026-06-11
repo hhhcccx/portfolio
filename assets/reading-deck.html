@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 时代真正稀缺的是什么 · Reading Deck Vol.001</title>
+  <style>
+    :root {
+      --paper: #f4efe4;
+      --paper-2: #e6dcc9;
+      --ink: #16231e;
+      --muted: #66746b;
+      --green: #173d33;
+      --green-2: #0d2a23;
+      --red: #a6402b;
+      --ochre: #b98742;
+      --line: rgba(22, 35, 30, 0.18);
+      --shadow: 0 24px 70px rgba(13, 42, 35, 0.16);
+      --serif: "Iowan Old Style", "Palatino Linotype", "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+      --sans: "Avenir Next", "Gill Sans", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(166, 64, 43, 0.10), transparent 28rem),
+        linear-gradient(115deg, rgba(23, 61, 51, 0.08), transparent 42%),
+        var(--paper);
+      font-family: var(--serif);
+      line-height: 1.8;
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.42;
+      mix-blend-mode: multiply;
+      background-image:
+        linear-gradient(rgba(22, 35, 30, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(22, 35, 30, 0.025) 1px, transparent 1px);
+      background-size: 34px 34px, 34px 34px;
+      z-index: 1;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .intro {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        linear-gradient(rgba(13, 42, 35, 0.92), rgba(13, 42, 35, 0.92)),
+        var(--green-2);
+      color: var(--paper);
+      transition: opacity 700ms ease, visibility 700ms ease;
+    }
+
+    .intro.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .intro-frame {
+      width: min(760px, 100%);
+      min-height: 460px;
+      border: 1px solid rgba(244, 239, 228, 0.28);
+      display: grid;
+      align-content: center;
+      gap: 28px;
+      padding: clamp(30px, 7vw, 78px);
+      position: relative;
+      box-shadow: inset 0 0 0 16px rgba(244, 239, 228, 0.035);
+    }
+
+    .intro-frame::before,
+    .intro-frame::after {
+      content: "";
+      position: absolute;
+      width: 78px;
+      height: 78px;
+      border-color: var(--ochre);
+      border-style: solid;
+      opacity: 0.75;
+    }
+
+    .intro-frame::before {
+      top: 18px;
+      left: 18px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .intro-frame::after {
+      right: 18px;
+      bottom: 18px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .intro-kicker,
+    .deck-kicker,
+    .eyebrow {
+      font-family: var(--sans);
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--red);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+    }
+
+    .intro .intro-kicker {
+      color: var(--ochre);
+    }
+
+    .intro h1 {
+      margin: 0;
+      font-size: clamp(46px, 8vw, 96px);
+      line-height: 1.02;
+      font-weight: 500;
+      letter-spacing: 0;
+      max-width: 9ch;
+    }
+
+    .intro p {
+      margin: 0;
+      max-width: 34rem;
+      color: rgba(244, 239, 228, 0.74);
+      font-size: 18px;
+    }
+
+    .enter-button {
+      width: fit-content;
+      border: 1px solid rgba(244, 239, 228, 0.42);
+      border-radius: 999px;
+      background: rgba(244, 239, 228, 0.05);
+      color: var(--paper);
+      padding: 12px 18px;
+      cursor: pointer;
+      justify-self: start;
+      position: relative;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 700;
+      transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .enter-button:hover {
+      background: rgba(185, 135, 66, 0.18);
+      border-color: rgba(185, 135, 66, 0.72);
+      transform: translateY(-1px);
+    }
+
+    .deck {
+      position: relative;
+      z-index: 2;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 15;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      min-height: 58px;
+      padding: 10px clamp(16px, 4vw, 42px);
+      background: rgba(244, 239, 228, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .progress-track {
+      height: 2px;
+      background: rgba(22, 35, 30, 0.14);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--red);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-links a {
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      min-width: 38px;
+      text-align: center;
+      background: rgba(244, 239, 228, 0.56);
+    }
+
+    main {
+      padding-bottom: 12vh;
+    }
+
+    .spread {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      min-height: min(860px, calc(100vh - 58px));
+      padding: clamp(42px, 8vw, 110px) 0;
+      display: grid;
+      align-items: center;
+    }
+
+    .cover {
+      grid-template-columns: minmax(0, 1.06fr) minmax(280px, 0.72fr);
+      gap: clamp(28px, 6vw, 82px);
+    }
+
+    .cover-title {
+      margin: 0;
+      max-width: 9.5ch;
+      font-size: clamp(58px, 9vw, 122px);
+      line-height: 0.98;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .cover-subtitle {
+      max-width: 42rem;
+      margin: 34px 0 0;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 23px);
+      line-height: 1.75;
+    }
+
+    .folio {
+      align-self: stretch;
+      border-left: 1px solid var(--line);
+      padding-left: clamp(22px, 4vw, 46px);
+      display: grid;
+      align-content: space-between;
+      gap: 30px;
+    }
+
+    .folio-mark {
+      width: 100%;
+      aspect-ratio: 1 / 1.18;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, transparent 0 49%, rgba(166, 64, 43, 0.36) 50%, transparent 51%),
+        repeating-linear-gradient(90deg, rgba(23, 61, 51, 0.14) 0 1px, transparent 1px 17px),
+        rgba(230, 220, 201, 0.46);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .folio-mark::after {
+      content: "稀缺性地图";
+      position: absolute;
+      right: 18px;
+      bottom: 16px;
+      writing-mode: vertical-rl;
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--green);
+    }
+
+    .meta-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .meta-list strong {
+      display: block;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .section {
+      border-top: 1px solid var(--line);
+    }
+
+    .section-grid {
+      grid-template-columns: minmax(180px, 0.45fr) minmax(0, 1fr);
+      gap: clamp(30px, 7vw, 90px);
+    }
+
+    .section-number {
+      font-size: clamp(64px, 10vw, 132px);
+      line-height: 0.8;
+      color: rgba(166, 64, 43, 0.74);
+      font-weight: 400;
+    }
+
+    .section h2 {
+      margin: 0 0 22px;
+      font-size: clamp(34px, 5vw, 72px);
+      line-height: 1.1;
+      font-weight: 500;
+      max-width: 11ch;
+    }
+
+    .section p {
+      margin: 0 0 18px;
+      font-size: clamp(18px, 1.8vw, 22px);
+      max-width: 48rem;
+    }
+
+    .lead {
+      color: var(--green);
+      font-size: clamp(22px, 2.5vw, 34px) !important;
+      line-height: 1.55 !important;
+    }
+
+    .toc {
+      align-items: start;
+    }
+
+    .toc-list {
+      counter-reset: toc;
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .toc-list a {
+      counter-increment: toc;
+      display: grid;
+      grid-template-columns: 64px 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-list a::before {
+      content: counter(toc, decimal-leading-zero);
+      font-family: var(--sans);
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .toc-list strong {
+      font-size: clamp(23px, 3vw, 38px);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .toc-list span {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .quote-band {
+      background: var(--green);
+      color: var(--paper);
+      min-height: 76vh;
+      display: grid;
+      place-items: center;
+      padding: clamp(48px, 9vw, 110px) 18px;
+    }
+
+    .quote-band blockquote {
+      width: min(920px, 100%);
+      margin: 0;
+      font-size: clamp(38px, 6vw, 86px);
+      line-height: 1.16;
+      font-weight: 500;
+    }
+
+    .quote-band cite {
+      display: block;
+      margin-top: 28px;
+      color: rgba(244, 239, 228, 0.62);
+      font-family: var(--sans);
+      font-style: normal;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .body-copy {
+      columns: 2 320px;
+      column-gap: clamp(36px, 6vw, 76px);
+    }
+
+    .body-copy p {
+      break-inside: avoid;
+    }
+
+    .pull {
+      margin: 36px 0;
+      padding: 26px 0 26px 26px;
+      border-left: 3px solid var(--red);
+      color: var(--green);
+      font-size: clamp(24px, 3vw, 40px);
+      line-height: 1.32;
+      break-inside: avoid;
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .quote-card {
+      min-height: 250px;
+      padding: 24px;
+      background: rgba(244, 239, 228, 0.92);
+      display: grid;
+      align-content: space-between;
+      gap: 30px;
+    }
+
+    .quote-card p {
+      margin: 0;
+      font-size: clamp(21px, 2vw, 30px);
+      line-height: 1.4;
+    }
+
+    .quote-card span {
+      font-family: var(--sans);
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .action-panel {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: clamp(26px, 5vw, 60px);
+      padding: clamp(28px, 5vw, 58px);
+      border: 1px solid var(--line);
+      background: rgba(230, 220, 201, 0.54);
+      box-shadow: var(--shadow);
+    }
+
+    .action-panel h2 {
+      margin-top: 0;
+    }
+
+    .commitment {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .commitment label {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 160px;
+      resize: vertical;
+      padding: 18px;
+      border: 1px solid rgba(22, 35, 30, 0.28);
+      background: rgba(244, 239, 228, 0.86);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 20px;
+      line-height: 1.7;
+    }
+
+    textarea:focus,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid rgba(166, 64, 43, 0.38);
+      outline-offset: 3px;
+    }
+
+    .seal-button {
+      justify-self: start;
+      border: 1px solid var(--red);
+      background: var(--red);
+      color: var(--paper);
+      padding: 12px 18px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-weight: 700;
+    }
+
+    .seal-note {
+      min-height: 28px;
+      margin: 0;
+      color: var(--green);
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .closing {
+      text-align: center;
+      min-height: 72vh;
+    }
+
+    .closing h2 {
+      max-width: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .closing p {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 800ms ease, transform 800ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 860px) {
+      .topbar {
+        grid-template-columns: 1fr auto;
+      }
+
+      .progress-track {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+
+      .nav-links {
+        overflow: auto;
+        max-width: 48vw;
+      }
+
+      .cover,
+      .section-grid,
+      .action-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .folio {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+        padding-left: 0;
+        padding-top: 24px;
+      }
+
+      .folio-mark {
+        max-height: 340px;
+      }
+
+      .toc-list a {
+        grid-template-columns: 42px 1fr;
+      }
+
+      .toc-list span {
+        grid-column: 2;
+      }
+
+      .index-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .intro-frame {
+        min-height: 520px;
+      }
+
+      .spread {
+        width: min(100% - 28px, 1180px);
+        padding: 48px 0;
+      }
+
+      .cover-title {
+        font-size: clamp(48px, 17vw, 74px);
+      }
+
+      .section-number {
+        font-size: 64px;
+      }
+
+      .quote-band blockquote {
+        font-size: clamp(34px, 12vw, 58px);
+      }
+
+      .body-copy {
+        columns: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="intro" id="intro" aria-label="开场仪式">
+    <div class="intro-frame">
+      <div class="intro-kicker">Reading Deck Vol.001</div>
+      <h1>先把噪音关小</h1>
+      <p>这份 deck 不讨论哪一个模型更强。它只问一个更难的问题：当答案越来越便宜，人还剩下什么值得训练？</p>
+      <button class="enter-button" id="enterButton" type="button" aria-label="进入阅读">
+        翻开正文
+      </button>
+    </div>
+  </div>
+
+  <div class="deck">
+    <header class="topbar">
+      <a href="#cover" aria-label="返回封面">Vol.001 · AI Scarcity</a>
+      <div class="progress-track" aria-hidden="true"><span class="progress-fill" id="progressFill"></span></div>
+      <nav class="nav-links" aria-label="章节导航">
+        <a href="#preface">前言</a>
+        <a href="#toc">目录</a>
+        <a href="#c1">01</a>
+        <a href="#c2">02</a>
+        <a href="#c3">03</a>
+        <a href="#quotes">金句</a>
+        <a href="#action">行动</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="spread cover" id="cover">
+        <div class="reveal">
+          <div class="deck-kicker">文库式交互阅读 deck</div>
+          <h1 class="cover-title">AI 时代真正稀缺的是什么</h1>
+          <p class="cover-subtitle">答案不是提示词，不是工具清单，也不是更快的信息流。真正稀缺的是能持续定义问题、承担判断、形成作品的人。</p>
+        </div>
+        <aside class="folio reveal" aria-label="出版信息">
+          <div class="folio-mark" role="img" aria-label="由细密网格和红色斜线组成的稀缺性地图"></div>
+          <ul class="meta-list">
+            <li><strong>阅读时长</strong>5-8 分钟</li>
+            <li><strong>结构</strong>前言 / 三章 / 金句索引 / 行动卡</li>
+            <li><strong>目的</strong>把一个判断读深，而不是把一堆观点看完</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="spread section section-grid" id="preface">
+        <div class="reveal">
+          <div class="eyebrow">Preface</div>
+          <div class="section-number">00</div>
+        </div>
+        <div class="reveal">
+          <h2>先区分便利和稀缺</h2>
+          <p class="lead">每一次技术浪潮都会先让人误判：我们以为新工具创造了新的稀缺物，实际上它常常先消灭旧的稀缺。</p>
+          <p>AI 让写作、检索、制图、编程、翻译和总结变得更便宜。于是很多人开始追逐“最新工具”和“最强工作流”。这当然有用，但它不是最终答案。</p>
+          <p>当一种能力被工具大规模压低成本，它就不再是最好的护城河。真正值得观察的是：工具变强之后，哪些人类能力反而更显眼、更难伪装、更难复制。</p>
+        </div>
+      </section>
+
+      <section class="spread section section-grid toc" id="toc">
+        <div class="reveal">
+          <div class="eyebrow">Contents</div>
+          <div class="section-number">目</div>
+        </div>
+        <div class="toc-list reveal">
+          <a href="#c1"><strong>问题定义，比答案生成更稀缺</strong><span>Chapter 01</span></a>
+          <a href="#c2"><strong>判断力，比信息量更稀缺</strong><span>Chapter 02</span></a>
+          <a href="#c3"><strong>作品化，比表达欲更稀缺</strong><span>Chapter 03</span></a>
+          <a href="#quotes"><strong>金句索引</strong><span>Review</span></a>
+          <a href="#action"><strong>给自己的一张行动卡</strong><span>Practice</span></a>
+        </div>
+      </section>
+
+      <section class="quote-band" aria-label="章节引语">
+        <blockquote class="reveal">
+          AI 越像一个答案机器，人越需要成为问题机器。
+          <cite>Chapter 01 · Problem Framing</cite>
+        </blockquote>
+      </section>
+
+      <section class="spread section section-grid" id="c1">
+        <div class="reveal">
+          <div class="eyebrow">Chapter 01</div>
+          <div class="section-number">01</div>
+        </div>
+        <article class="body-copy reveal">
+          <p class="lead">如果问题是错的，答案越快，偏离越远。</p>
+          <p>AI 时代最容易被高估的是“会问问题”。很多提示词技巧只是在表达需求，但真正的问题定义不是把愿望写清楚，而是决定什么值得被解决。</p>
+          <p>一个普通问题会问：帮我写一篇关于个人品牌的文章。一个更好的问题会问：为什么一个没有传统履历优势的人，需要用持续作品替代简历？这两个问题导向完全不同的作品。</p>
+          <div class="pull">问题定义是一种取舍能力：你先决定不解决什么，才可能把一件事解决深。</div>
+          <p>机器可以扩展答案空间，但它不能替你承认真正的约束。你面对的是谁？对方已经相信什么？什么说法听起来正确但没有用？哪一个判断会改变行动？这些都不是模型参数能自动给出的。</p>
+          <p>所以未来真正值钱的不是“我会用 AI 做很多事”，而是“我能把混乱现实压缩成一个值得投入的问题”。</p>
+        </article>
+      </section>
+
+      <section class="quote-band" aria-label="章节引语">
+        <blockquote class="reveal">
+          信息量会通胀，判断力不会自动升值。
+          <cite>Chapter 02 · Judgment</cite>
+        </blockquote>
+      </section>
+
+      <section class="spread section section-grid" id="c2">
+        <div class="reveal">
+          <div class="eyebrow">Chapter 02</div>
+          <div class="section-number">02</div>
+        </div>
+        <article class="body-copy reveal">
+          <p class="lead">信息越多，越需要一个人敢于排序。</p>
+          <p>AI 让每个人都能得到一份像模像样的综述。但综述不是判断。综述通常会尽量完整，判断必须承受偏向。</p>
+          <p>所谓判断，不是态度强硬，而是能说出“我为什么认为这件事优先级更高”。它包含经验、目标、语境和风险感。它也包含一种不舒服的能力：在证据不完整的时候先下注，然后用反馈修正。</p>
+          <div class="pull">判断力的核心不是知道更多，而是知道什么在此刻更重要。</div>
+          <p>很多人会把 AI 当成外脑，却忘了外脑需要内在秩序。没有秩序的人，只会得到更多互相抵消的建议；有秩序的人，会把建议变成选择。</p>
+          <p>这就是为什么同样使用 AI，有人只是变快，有人开始变准。快来自工具，准来自人的标准。</p>
+        </article>
+      </section>
+
+      <section class="quote-band" aria-label="章节引语">
+        <blockquote class="reveal">
+          未来不是缺表达的人，而是缺能把表达做成作品的人。
+          <cite>Chapter 03 · Workmanship</cite>
+        </blockquote>
+      </section>
+
+      <section class="spread section section-grid" id="c3">
+        <div class="reveal">
+          <div class="eyebrow">Chapter 03</div>
+          <div class="section-number">03</div>
+        </div>
+        <article class="body-copy reveal">
+          <p class="lead">表达欲会制造材料，作品意识负责完成它。</p>
+          <p>AI 最容易诱发一种错觉：生成了，就等于完成了。可是读者感受到的价值，往往不在“有内容”，而在内容被认真整理过。</p>
+          <p>作品化意味着你愿意做最后 20% 的脏活：删掉漂亮废话，调整顺序，补上转折，打磨标题，检查节奏，为读者保留入口和出口。</p>
+          <div class="pull">作品不是内容的容器，作品是对读者注意力的承诺。</div>
+          <p>在内容泛滥的世界里，粗糙会被自动忽略。不是因为读者苛刻，而是因为读者没有义务替作者完成组织工作。</p>
+          <p>所以 AI 时代真正稀缺的人，可能不是最会生成的人，而是最愿意完成的人。他们把原料变成结构，把判断变成页面，把一段想法变成可以反复进入的作品。</p>
+        </article>
+      </section>
+
+      <section class="spread section" id="quotes">
+        <div class="reveal">
+          <div class="eyebrow">Quote Index</div>
+          <h2>金句索引</h2>
+        </div>
+        <div class="index-grid reveal">
+          <article class="quote-card"><p>AI 越像一个答案机器，人越需要成为问题机器。</p><span>01 / 问题定义</span></article>
+          <article class="quote-card"><p>问题定义是一种取舍能力。</p><span>02 / 取舍</span></article>
+          <article class="quote-card"><p>信息越多，越需要一个人敢于排序。</p><span>03 / 判断</span></article>
+          <article class="quote-card"><p>快来自工具，准来自人的标准。</p><span>04 / 标准</span></article>
+          <article class="quote-card"><p>作品不是内容的容器，作品是对读者注意力的承诺。</p><span>05 / 作品化</span></article>
+          <article class="quote-card"><p>真正稀缺的人，不是最会生成的人，而是最愿意完成的人。</p><span>06 / 完成</span></article>
+        </div>
+      </section>
+
+      <section class="spread section" id="action">
+        <div class="action-panel reveal">
+          <div>
+            <div class="eyebrow">Action Card</div>
+            <h2>给自己留一个可执行动作</h2>
+            <p>读完以后，只写一个承诺：接下来 48 小时，你要把哪一段原料做成一个真正完成的作品？</p>
+          </div>
+          <div class="commitment">
+            <label for="commitText">我的 48 小时作品承诺</label>
+            <textarea id="commitText" placeholder="例如：把那篇关于个人品牌的笔记整理成一份 6 页阅读 deck，而不是继续收藏参考案例。"></textarea>
+            <button class="seal-button" id="sealButton" type="button">盖章确认</button>
+            <p class="seal-note" id="sealNote" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="spread section closing" id="closing">
+        <div class="reveal">
+          <div class="eyebrow">Endnote</div>
+          <h2>把能力交给工具，把标准留给自己。</h2>
+          <p>这不是反技术。恰恰相反，越认真使用工具，越需要认真保留人的问题感、判断力和作品意识。</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const intro = document.querySelector("#intro");
+    const enterButton = document.querySelector("#enterButton");
+    const progressFill = document.querySelector("#progressFill");
+    const sealButton = document.querySelector("#sealButton");
+    const sealNote = document.querySelector("#sealNote");
+    const commitText = document.querySelector("#commitText");
+
+    const hideIntro = () => {
+      intro.classList.add("is-hidden");
+      window.setTimeout(() => intro.remove(), 800);
+    };
+
+    enterButton.addEventListener("click", hideIntro);
+
+    const updateProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      progressFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("is-visible");
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
+
+    sealButton.addEventListener("click", () => {
+      const text = commitText.value.trim();
+      sealNote.textContent = text
+        ? "已确认。现在它不是想法，是一个 48 小时内要完成的作品。"
+        : "先写下一个具体作品，再盖章。";
+    });
+  </script>
+</body>
+</html>
