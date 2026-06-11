@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gesture Controller Playground</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="stage" aria-label="Gesture controller playground">
+      <section class="hud" aria-label="Status panel">
+        <div>
+          <p class="eyebrow">Gesture Controller</p>
+          <h1>用手抓住这颗光球</h1>
+        </div>
+        <div class="meters">
+          <div class="meter">
+            <span>Pinch</span>
+            <strong id="pinchValue">0%</strong>
+          </div>
+          <div class="meter">
+            <span>Mode</span>
+            <strong id="modeValue">Loading</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="playfield" id="playfield" aria-label="Interactive area">
+        <canvas id="trailCanvas" aria-hidden="true"></canvas>
+        <video id="camera" playsinline muted></video>
+        <div class="target" id="target" aria-label="Draggable orb">
+          <span></span>
+        </div>
+        <div class="cursor" id="cursor" aria-hidden="true"></div>
+        <div class="hint" id="hint">允许摄像头后，把手伸进画面</div>
+      </section>
+
+      <footer class="dock" aria-label="Gesture hints">
+        <div><kbd>食指</kbd><span>移动指针</span></div>
+        <div><kbd>捏合</kbd><span>抓取光球</span></div>
+        <div><kbd>挥手</kbd><span>触发爆发</span></div>
+      </footer>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

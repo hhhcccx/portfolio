@@ -380,7 +380,7 @@
       </article>
 
       <!-- 02 手势控制器 — 1/3 -->
-      <article class="card">
+      <article class="card" data-click data-type="iframe" data-src="assets/gesture-controller/index.html" data-title="手势控制器">
         <div class="card-preview">
           <div class="card-preview-inner">
             <div class="ph-gesture">
@@ -395,7 +395,7 @@
           <div class="card-meta"><span class="card-num" data-final="002">002</span><span class="card-tag">实验</span></div>
           <h2 class="card-title">手势控制器</h2>
           <p class="card-desc">用摄像头和 MediaPipe 把手变成鼠标——移动食指控制光标，捏合拇指抓取，快速侧滑触发爆发效果。</p>
-          <div class="card-footer"><span class="card-tech">Browser + MediaPipe</span></div>
+          <div class="card-footer"><span class="card-tech">Browser + MediaPipe</span><span class="card-hint">进入体验 →</span></div>
         </div>
       </article>
 
@@ -583,7 +583,10 @@
     const el = type === 'video' ? document.createElement('video') : document.createElement('iframe');
     el.src = src;
     if (type === 'video') { el.controls = true; el.autoplay = true; }
-    else { el.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups'; }
+    else {
+      el.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups';
+      el.allow = 'camera';
+    }
     modalBody.appendChild(el);
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
