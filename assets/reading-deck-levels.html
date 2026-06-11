@@ -1,0 +1,1065 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 使用熟练度的十级地图 · Reading Deck Vol.002</title>
+  <style>
+    :root {
+      --paper: #f7f3ea;
+      --paper-2: #e9dfcf;
+      --ink: #1c1f24;
+      --muted: #687079;
+      --blue: #123a55;
+      --blue-2: #081d2c;
+      --cyan: #2f8792;
+      --amber: #c47b2d;
+      --red: #b74838;
+      --line: rgba(28, 31, 36, 0.16);
+      --shadow: 0 22px 70px rgba(8, 29, 44, 0.16);
+      --serif: "Iowan Old Style", "Palatino Linotype", "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+      --sans: "Avenir Next", "Gill Sans", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 78% 10%, rgba(47, 135, 146, 0.16), transparent 29rem),
+        radial-gradient(circle at 8% 42%, rgba(196, 123, 45, 0.12), transparent 24rem),
+        linear-gradient(115deg, rgba(18, 58, 85, 0.07), transparent 52%),
+        var(--paper);
+      font-family: var(--serif);
+      line-height: 1.78;
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.36;
+      background:
+        linear-gradient(rgba(28, 31, 36, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(28, 31, 36, 0.026) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mix-blend-mode: multiply;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    .intro {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--paper);
+      background:
+        linear-gradient(rgba(8, 29, 44, 0.92), rgba(8, 29, 44, 0.92)),
+        var(--blue-2);
+      transition: opacity 640ms ease, visibility 640ms ease;
+    }
+
+    .intro.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .intro-frame {
+      width: min(840px, 100%);
+      min-height: 470px;
+      padding: clamp(32px, 7vw, 80px);
+      border: 1px solid rgba(247, 243, 234, 0.28);
+      display: grid;
+      gap: 24px;
+      align-content: center;
+      position: relative;
+      box-shadow: inset 0 0 0 14px rgba(247, 243, 234, 0.035);
+    }
+
+    .intro-frame::before {
+      content: "Lv.00 → Lv.10";
+      position: absolute;
+      right: 24px;
+      top: 24px;
+      font-family: var(--sans);
+      color: rgba(247, 243, 234, 0.58);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+    }
+
+    .kicker,
+    .eyebrow {
+      font-family: var(--sans);
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--red);
+    }
+
+    .intro .kicker {
+      color: var(--amber);
+    }
+
+    .intro h1 {
+      margin: 0;
+      max-width: 9.5ch;
+      font-size: clamp(46px, 8vw, 96px);
+      line-height: 1.02;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      margin: 0;
+      max-width: 42rem;
+      color: rgba(247, 243, 234, 0.74);
+      font-size: 18px;
+    }
+
+    .enter-button,
+    .seal-button {
+      justify-self: start;
+      border: 1px solid rgba(247, 243, 234, 0.42);
+      border-radius: 999px;
+      background: rgba(247, 243, 234, 0.06);
+      color: var(--paper);
+      padding: 12px 18px;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 800;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .enter-button:hover,
+    .seal-button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(196, 123, 45, 0.78);
+      background: rgba(196, 123, 45, 0.18);
+    }
+
+    .deck {
+      position: relative;
+      z-index: 2;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      min-height: 58px;
+      padding: 10px clamp(16px, 4vw, 42px);
+      background: rgba(247, 243, 234, 0.9);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .progress-track {
+      height: 2px;
+      background: rgba(28, 31, 36, 0.14);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      min-width: 38px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      background: rgba(247, 243, 234, 0.58);
+      text-align: center;
+    }
+
+    main {
+      padding-bottom: 10vh;
+    }
+
+    .spread {
+      width: min(1180px, calc(100% - 36px));
+      min-height: min(860px, calc(100vh - 58px));
+      margin: 0 auto;
+      padding: clamp(42px, 8vw, 108px) 0;
+      display: grid;
+      align-items: center;
+    }
+
+    .cover {
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.72fr);
+      gap: clamp(28px, 6vw, 82px);
+    }
+
+    .cover-title {
+      margin: 0;
+      max-width: 9.8ch;
+      font-size: clamp(54px, 8.2vw, 116px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .cover-subtitle {
+      max-width: 43rem;
+      margin: 32px 0 0;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 23px);
+      line-height: 1.74;
+    }
+
+    .source-card {
+      align-self: stretch;
+      padding-left: clamp(24px, 4vw, 46px);
+      border-left: 1px solid var(--line);
+      display: grid;
+      align-content: space-between;
+      gap: 28px;
+    }
+
+    .level-orbit {
+      position: relative;
+      aspect-ratio: 1 / 1.05;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at center, transparent 0 26%, rgba(47, 135, 146, 0.22) 27% 28%, transparent 29% 48%, rgba(196, 123, 45, 0.28) 49% 50%, transparent 51%),
+        conic-gradient(from -30deg, rgba(18, 58, 85, 0.16), transparent 20%, rgba(183, 72, 56, 0.2), transparent 58%, rgba(47, 135, 146, 0.18), rgba(18, 58, 85, 0.16));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .level-orbit::before {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border: 1px dashed rgba(28, 31, 36, 0.22);
+      border-radius: 50%;
+    }
+
+    .level-orbit::after {
+      content: "10";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      font-size: clamp(82px, 12vw, 140px);
+      line-height: 1;
+    }
+
+    .meta-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 13px;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .meta-list strong {
+      display: block;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .source-link {
+      color: var(--blue);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      overflow-wrap: anywhere;
+    }
+
+    .section {
+      border-top: 1px solid var(--line);
+    }
+
+    .section-grid {
+      grid-template-columns: minmax(180px, 0.45fr) minmax(0, 1fr);
+      gap: clamp(30px, 7vw, 88px);
+    }
+
+    .section-number {
+      font-size: clamp(64px, 10vw, 130px);
+      line-height: 0.84;
+      color: rgba(47, 135, 146, 0.78);
+      font-weight: 400;
+    }
+
+    .section h2 {
+      max-width: 13ch;
+      margin: 0 0 22px;
+      font-size: clamp(34px, 5vw, 72px);
+      line-height: 1.1;
+      font-weight: 500;
+    }
+
+    .section p {
+      max-width: 49rem;
+      margin: 0 0 18px;
+      font-size: clamp(18px, 1.8vw, 22px);
+    }
+
+    .lead {
+      color: var(--blue);
+      font-size: clamp(22px, 2.5vw, 34px) !important;
+      line-height: 1.52 !important;
+    }
+
+    .axis-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .axis-card {
+      min-height: 250px;
+      padding: 24px;
+      background: rgba(247, 243, 234, 0.92);
+      display: grid;
+      align-content: space-between;
+      gap: 30px;
+    }
+
+    .axis-card h3,
+    .phase-card h3,
+    .level-card h3 {
+      margin: 0;
+      font-size: clamp(24px, 2.4vw, 38px);
+      line-height: 1.18;
+      font-weight: 500;
+    }
+
+    .axis-card p,
+    .phase-card p,
+    .level-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.72;
+    }
+
+    .axis-card span,
+    .phase-card span,
+    .level-card span,
+    .quote-card span {
+      font-family: var(--sans);
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .map-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .level-map {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      min-height: 210px;
+      border: 1px solid var(--line);
+      background: rgba(247, 243, 234, 0.76);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .level-step {
+      display: grid;
+      align-content: end;
+      min-height: 210px;
+      padding: 14px 10px;
+      border-right: 1px solid var(--line);
+      background: linear-gradient(to top, rgba(47, 135, 146, var(--lift)), transparent 68%);
+    }
+
+    .level-step:last-child {
+      border-right: 0;
+    }
+
+    .level-step strong {
+      display: block;
+      font-family: var(--sans);
+      color: var(--blue);
+      font-size: 18px;
+    }
+
+    .level-step span {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .phase-card {
+      min-height: 310px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      background: rgba(247, 243, 234, 0.82);
+      display: grid;
+      gap: 20px;
+      align-content: start;
+    }
+
+    .phase-card ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      font-family: var(--sans);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .phase-card li {
+      padding-left: 14px;
+      border-left: 2px solid rgba(47, 135, 146, 0.42);
+    }
+
+    .quote-band {
+      min-height: 74vh;
+      padding: clamp(48px, 9vw, 108px) 18px;
+      background: var(--blue);
+      color: var(--paper);
+      display: grid;
+      place-items: center;
+    }
+
+    .quote-band blockquote {
+      width: min(940px, 100%);
+      margin: 0;
+      font-size: clamp(36px, 5.8vw, 82px);
+      line-height: 1.18;
+      font-weight: 500;
+    }
+
+    .quote-band cite {
+      display: block;
+      margin-top: 28px;
+      color: rgba(247, 243, 234, 0.62);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .level-card {
+      min-height: 210px;
+      padding: 24px;
+      background: rgba(247, 243, 234, 0.93);
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .level-card strong {
+      display: inline-grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(18, 58, 85, 0.28);
+      color: var(--blue);
+      font-family: var(--sans);
+      font-size: 14px;
+      border-radius: 50%;
+    }
+
+    .body-copy {
+      columns: 2 330px;
+      column-gap: clamp(36px, 6vw, 76px);
+    }
+
+    .body-copy p {
+      break-inside: avoid;
+    }
+
+    .pull {
+      margin: 34px 0;
+      padding: 24px 0 24px 26px;
+      border-left: 3px solid var(--cyan);
+      color: var(--blue);
+      font-size: clamp(24px, 3vw, 39px);
+      line-height: 1.34;
+      break-inside: avoid;
+    }
+
+    .quote-index {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .quote-card {
+      min-height: 230px;
+      padding: 24px;
+      background: rgba(247, 243, 234, 0.94);
+      display: grid;
+      align-content: space-between;
+      gap: 28px;
+    }
+
+    .quote-card p {
+      margin: 0;
+      color: var(--blue);
+      font-size: clamp(21px, 2vw, 30px);
+      line-height: 1.42;
+    }
+
+    .action-panel {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: clamp(26px, 5vw, 60px);
+      padding: clamp(28px, 5vw, 58px);
+      border: 1px solid var(--line);
+      background: rgba(233, 223, 207, 0.54);
+      box-shadow: var(--shadow);
+    }
+
+    .action-panel h2 {
+      margin-top: 0;
+    }
+
+    .commitment {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .commitment label {
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 170px;
+      padding: 18px;
+      resize: vertical;
+      border: 1px solid rgba(28, 31, 36, 0.26);
+      background: rgba(247, 243, 234, 0.88);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 20px;
+      line-height: 1.68;
+    }
+
+    .seal-button {
+      border-color: var(--blue);
+      background: var(--blue);
+      border-radius: 0;
+    }
+
+    .seal-note {
+      min-height: 28px;
+      margin: 0;
+      color: var(--blue);
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .source-section {
+      min-height: 60vh;
+    }
+
+    .source-box {
+      padding: clamp(26px, 5vw, 52px);
+      border: 1px solid var(--line);
+      background: rgba(247, 243, 234, 0.86);
+    }
+
+    .source-box p {
+      max-width: 60rem;
+    }
+
+    .closing {
+      min-height: 70vh;
+      text-align: center;
+    }
+
+    .closing h2 {
+      max-width: 16ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .closing p {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 800ms ease, transform 800ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    button:focus-visible,
+    textarea:focus,
+    a:focus-visible {
+      outline: 3px solid rgba(47, 135, 146, 0.36);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 920px) {
+      .topbar {
+        grid-template-columns: 1fr auto;
+      }
+
+      .progress-track {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+
+      .nav-links {
+        max-width: 52vw;
+        overflow: auto;
+      }
+
+      .cover,
+      .section-grid,
+      .action-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .source-card {
+        padding-left: 0;
+        padding-top: 24px;
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .axis-grid,
+      .phase-grid,
+      .quote-index {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .level-map {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .level-step {
+        min-height: 160px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .spread {
+        width: min(100% - 28px, 1180px);
+        padding: 48px 0;
+      }
+
+      .intro-frame {
+        min-height: 520px;
+      }
+
+      .cover-title {
+        font-size: clamp(46px, 16vw, 72px);
+      }
+
+      .section-number {
+        font-size: 64px;
+      }
+
+      .axis-grid,
+      .phase-grid,
+      .level-grid,
+      .quote-index {
+        grid-template-columns: 1fr;
+      }
+
+      .level-map {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .body-copy {
+        columns: 1;
+      }
+
+      .quote-band blockquote {
+        font-size: clamp(32px, 11vw, 54px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="intro" id="intro" aria-label="开场">
+    <div class="intro-frame">
+      <div class="kicker">Reading Deck Vol.002</div>
+      <h1>先知道自己在哪一级</h1>
+      <p>这不是一份 AI 工具清单，而是一张进阶地图：从偶尔试用，到把 AI 变成自己的工作方式。</p>
+      <button class="enter-button" id="enterButton" type="button" aria-label="进入阅读">展开地图</button>
+    </div>
+  </div>
+
+  <div class="deck">
+    <header class="topbar">
+      <a href="#cover" aria-label="返回封面">Vol.002 · AI Level Map</a>
+      <div class="progress-track" aria-hidden="true"><span class="progress-fill" id="progressFill"></span></div>
+      <nav class="nav-links" aria-label="章节导航">
+        <a href="#source">来源</a>
+        <a href="#axes">四轴</a>
+        <a href="#map">地图</a>
+        <a href="#phases">阶段</a>
+        <a href="#levels">十级</a>
+        <a href="#action">行动</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="spread cover" id="cover">
+        <div class="reveal">
+          <div class="kicker">文库式交互阅读 deck</div>
+          <h1 class="cover-title">AI 使用熟练度的十级地图</h1>
+          <p class="cover-subtitle">基于「数字生命卡兹克」的原文整理：AI 进阶不是学会更多技巧，而是沿着可控性、广度、形态和角色四条轴，把自己从使用者推向创造者。</p>
+        </div>
+        <aside class="source-card reveal" aria-label="来源和出版信息">
+          <div class="level-orbit" role="img" aria-label="由同心圆和数字 10 构成的等级地图视觉"></div>
+          <ul class="meta-list">
+            <li><strong>阅读时长</strong>7-10 分钟</li>
+            <li><strong>原作者</strong>数字生命卡兹克</li>
+            <li><strong>原文</strong><a class="source-link" href="https://mp.weixin.qq.com/s/GhTOhZO_zj8NfR1vPmPVww" target="_blank" rel="noopener">观察了三年，我把所有人用AI的水平分成了10个等级。</a></li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="spread section section-grid" id="source">
+        <div class="reveal">
+          <div class="eyebrow">Source</div>
+          <div class="section-number">源</div>
+        </div>
+        <div class="source-box reveal">
+          <h2>这是一份整理，不是替代原文</h2>
+          <p class="lead">本文库 deck 基于原文的结构做二次阅读整理，保留作者、标题和链接，重点把长文里的等级体系转成可浏览、可自测、可复读的地图。</p>
+          <p>原文作者：数字生命卡兹克。原文标题：《观察了三年，我把所有人用AI的水平分成了10个等级。》</p>
+          <p>原文链接：<a class="source-link" href="https://mp.weixin.qq.com/s/GhTOhZO_zj8NfR1vPmPVww" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/GhTOhZO_zj8NfR1vPmPVww</a></p>
+          <p>本 deck 不复制原文全文，只提炼其核心框架：四个进阶维度、十个使用等级，以及最后关于判断力、审美和个人系统的结论。</p>
+        </div>
+      </section>
+
+      <section class="spread section section-grid" id="preface">
+        <div class="reveal">
+          <div class="eyebrow">Preface</div>
+          <div class="section-number">00</div>
+        </div>
+        <div class="reveal">
+          <h2>同样的 AI，不同的人会用出完全不同的世界</h2>
+          <p class="lead">原文最有价值的地方，不是给 AI 用户贴标签，而是把“我该怎么进步”这个模糊问题，变成了一张可以定位的地图。</p>
+          <p>很多人以为 AI 能力差距来自工具：谁用更强模型，谁买更多会员，谁掌握更新的提示词。但这篇文章的判断更深一层：真正的差距来自人如何控制 AI、把 AI 用到多宽、是否跨过 Agent 门槛，以及有没有从消费者变成创造者。</p>
+          <p>所以这份 deck 不把 10 个等级做成排行榜，而把它做成一条路径：先定位，再选择下一步。</p>
+        </div>
+      </section>
+
+      <section class="spread section" id="axes">
+        <div class="reveal">
+          <div class="eyebrow">Four Axes</div>
+          <h2>四个进阶维度</h2>
+        </div>
+        <div class="axis-grid reveal">
+          <article class="axis-card">
+            <span>Axis 01</span>
+            <h3>可控性</h3>
+            <p>从觉得 AI 随机、发散、会胡编，到能给上下文、规则、样例和约束，让输出稳定可用。</p>
+          </article>
+          <article class="axis-card">
+            <span>Axis 02</span>
+            <h3>广度</h3>
+            <p>从只在自己熟悉领域里用，到借助 AI 越过专业边界，尝试数据、设计、写作、产品等新任务。</p>
+          </article>
+          <article class="axis-card">
+            <span>Axis 03</span>
+            <h3>形态</h3>
+            <p>从 ChatBot 式一问一答，到 Agent 式长程任务、工具调用、文件操作和多步执行。</p>
+          </article>
+          <article class="axis-card">
+            <span>Axis 04</span>
+            <h3>角色</h3>
+            <p>从使用别人写好的 prompt，到沉淀自己的方法、skill、工作流和系统，成为创造者。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="quote-band" aria-label="核心引语">
+        <blockquote class="reveal">
+          进阶不是把 AI 用得更多，而是让 AI 进入你的判断、流程和作品。
+          <cite>Reading Synthesis · Not a direct quote</cite>
+        </blockquote>
+      </section>
+
+      <section class="spread section section-grid" id="map">
+        <div class="reveal">
+          <div class="eyebrow">Level Map</div>
+          <div class="section-number">10</div>
+        </div>
+        <div class="map-shell reveal">
+          <h2>从旁观者到一人军团</h2>
+          <p class="lead">十个等级不是十个身份，而是十种人与 AI 的关系。</p>
+          <div class="level-map" aria-label="AI 使用熟练度十级地图">
+            <div class="level-step" style="--lift: 0.08"><strong>Lv.0</strong><span>旁观者</span></div>
+            <div class="level-step" style="--lift: 0.12"><strong>Lv.1</strong><span>尝鲜者</span></div>
+            <div class="level-step" style="--lift: 0.16"><strong>Lv.2</strong><span>对话者</span></div>
+            <div class="level-step" style="--lift: 0.24"><strong>Lv.3</strong><span>驯化师</span></div>
+            <div class="level-step" style="--lift: 0.32"><strong>Lv.4</strong><span>越境者</span></div>
+            <div class="level-step" style="--lift: 0.40"><strong>Lv.5</strong><span>织网者</span></div>
+            <div class="level-step" style="--lift: 0.50"><strong>Lv.6</strong><span>召唤师</span></div>
+            <div class="level-step" style="--lift: 0.60"><strong>Lv.7</strong><span>铸造师</span></div>
+            <div class="level-step" style="--lift: 0.70"><strong>Lv.8</strong><span>造物主</span></div>
+            <div class="level-step" style="--lift: 0.82"><strong>Lv.9</strong><span>觉醒者</span></div>
+            <div class="level-step" style="--lift: 0.94"><strong>Lv.10</strong><span>一人军团</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="spread section" id="phases">
+        <div class="reveal">
+          <div class="eyebrow">Four Phases</div>
+          <h2>四段进阶</h2>
+        </div>
+        <div class="phase-grid reveal">
+          <article class="phase-card">
+            <span>Lv.0-3</span>
+            <h3>从看热闹到能控制</h3>
+            <p>这一段的关键不是工具数量，而是能不能让 AI 从随机输出变成稳定合作对象。</p>
+            <ul>
+              <li>开始追问和补充背景</li>
+              <li>学会给约束和例子</li>
+              <li>用结构化 prompt 迭代结果</li>
+            </ul>
+          </article>
+          <article class="phase-card">
+            <span>Lv.4-5</span>
+            <h3>从单点使用到工作流</h3>
+            <p>AI 不再只处理熟悉任务，而开始帮助你跨出专业边界，并嵌入日常流程。</p>
+            <ul>
+              <li>跨领域完成以前做不了的事</li>
+              <li>建立模板和固定流程</li>
+              <li>开始收集上下文和知识库</li>
+            </ul>
+          </article>
+          <article class="phase-card">
+            <span>Lv.6-7</span>
+            <h3>从聊天对象到执行系统</h3>
+            <p>跨过 Agent 门槛后，AI 不只是回答问题，而能读文件、改代码、调用工具、执行多步任务。</p>
+            <ul>
+              <li>理解 Agent 与 ChatBot 的差异</li>
+              <li>开始封装 skill 和流程</li>
+              <li>用反馈回路提升产出质量</li>
+            </ul>
+          </article>
+          <article class="phase-card">
+            <span>Lv.8-10</span>
+            <h3>从会用 AI 到被 AI 重塑</h3>
+            <p>高级阶段的分水岭不再是技巧，而是人的审美、判断、世界理解和系统化能力。</p>
+            <ul>
+              <li>AI 参与几乎所有创造环节</li>
+              <li>工作方式与 AI 协作深度融合</li>
+              <li>个人能力开始接近小团队</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="quote-band" aria-label="核心引语">
+        <blockquote class="reveal">
+          工具平权之后，差距不会消失，它会回到人的判断力里。
+          <cite>Reading Synthesis · Based on the source argument</cite>
+        </blockquote>
+      </section>
+
+      <section class="spread section" id="levels">
+        <div class="reveal">
+          <div class="eyebrow">Ten Levels</div>
+          <h2>十级速览</h2>
+        </div>
+        <div class="level-grid reveal">
+          <article class="level-card"><strong>00</strong><h3>旁观者</h3><p>知道 AI，但还没有真正和大模型对话。第一步不是研究工具，而是打开一个 AI 问一句话。</p><span>Start</span></article>
+          <article class="level-card"><strong>01</strong><h3>尝鲜者</h3><p>把 AI 当高级搜索或一次性代写工具。结果好坏靠运气，还没有形成稳定使用习惯。</p><span>Use</span></article>
+          <article class="level-card"><strong>02</strong><h3>对话者</h3><p>开始发现追问、背景和表达方式会影响结果，第一次摸到“控制”的边缘。</p><span>Dialogue</span></article>
+          <article class="level-card"><strong>03</strong><h3>驯化师</h3><p>会给规则、样例、格式和不确定性要求。AI 从随机抽卡变成大概率可用。</p><span>Control</span></article>
+          <article class="level-card"><strong>04</strong><h3>越境者</h3><p>开始用 AI 做自己专业外的事情，能力边界显著扩大，也第一次感到“我好像什么都能试”。</p><span>Breadth</span></article>
+          <article class="level-card"><strong>05</strong><h3>织网者</h3><p>把 AI 嵌入日常流程，建立模板、项目、知识库和长期上下文，开始设计协作方式。</p><span>Workflow</span></article>
+          <article class="level-card"><strong>06</strong><h3>召唤师</h3><p>跨过 ChatBot 到 Agent 的门槛，开始让 AI 读写文件、调用工具、执行多步骤任务。</p><span>Agent</span></article>
+          <article class="level-card"><strong>07</strong><h3>铸造师</h3><p>开始创造自己的 skill、自动化流程和反馈回路，把一次性经验铸造成可复用系统。</p><span>System</span></article>
+          <article class="level-card"><strong>08</strong><h3>造物主</h3><p>AI 深度参与技术或艺术创造，产出不再只是效率提升，而是持续做出新作品。</p><span>Create</span></article>
+          <article class="level-card"><strong>09</strong><h3>觉醒者</h3><p>AI 成为思考过程的一部分。面对问题时，本能地思考如何和 AI 协作得到更好结果。</p><span>Merge</span></article>
+          <article class="level-card"><strong>10</strong><h3>一人军团</h3><p>个人用系统复制自己的判断和审美，在内容、产品、设计、运营等多个层面形成小团队级产能。</p><span>Army</span></article>
+          <article class="level-card"><strong>?</strong><h3>真正的问题</h3><p>到最后，问题不再是“怎么用好 AI”，而是“我到底想成为什么样的人”。</p><span>Identity</span></article>
+        </div>
+      </section>
+
+      <section class="spread section section-grid" id="insight">
+        <div class="reveal">
+          <div class="eyebrow">Insight</div>
+          <div class="section-number">判</div>
+        </div>
+        <article class="body-copy reveal">
+          <p class="lead">这篇文章真正适合做 deck 的地方，是它把“学习 AI”从工具焦虑里救了出来。</p>
+          <p>如果只看工具，你会一直追最新模型、最新 Agent、最新 prompt。可等级地图提醒我们：工具只是外层，真正改变结果的是关系。你是把 AI 当搜索框、当助理、当工作流，还是当一套能承载你判断的系统？这决定了你能走多远。</p>
+          <div class="pull">越往后，AI 进阶越不像学习软件，越像重建自己的工作方式。</div>
+          <p>所以 Lv.10 的重点不是“一个人干掉一家公司”的爽感，而是一个更朴素的问题：当执行成本被压低，你的判断、审美和价值排序是否足够清楚？</p>
+          <p>如果不清楚，AI 只会放大混乱；如果清楚，它才会放大你。</p>
+        </article>
+      </section>
+
+      <section class="spread section" id="quotes">
+        <div class="reveal">
+          <div class="eyebrow">Quote Index</div>
+          <h2>复读索引</h2>
+        </div>
+        <div class="quote-index reveal">
+          <article class="quote-card"><p>AI 进阶不是工具数量增加，而是协作关系升级。</p><span>01 / 主判断</span></article>
+          <article class="quote-card"><p>可控性决定 AI 能不能稳定帮你。</p><span>02 / 控制</span></article>
+          <article class="quote-card"><p>广度决定 AI 能不能带你越过专业边界。</p><span>03 / 越境</span></article>
+          <article class="quote-card"><p>Agent 改变的是对 AI 能做什么的想象。</p><span>04 / 形态</span></article>
+          <article class="quote-card"><p>Skill 和流程，是把一次经验变成复利。</p><span>05 / 系统</span></article>
+          <article class="quote-card"><p>最后的差距，来自人的理解、审美和判断。</p><span>06 / 终局</span></article>
+        </div>
+      </section>
+
+      <section class="spread section" id="action">
+        <div class="action-panel reveal">
+          <div>
+            <div class="eyebrow">Action Card</div>
+            <h2>定位你现在的一级</h2>
+            <p>不要问“我会不会 AI”。改问两个问题：我现在最像哪一级？下一步只需要跨过哪一道门槛？</p>
+          </div>
+          <div class="commitment">
+            <label for="commitText">我的当前等级和下一步</label>
+            <textarea id="commitText" placeholder="例如：我大概在 Lv.5 织网者。下一步不是继续收藏 prompt，而是把 reading deck 流程封装成一个半自动生成器。"></textarea>
+            <button class="seal-button" id="sealButton" type="button">确认下一步</button>
+            <p class="seal-note" id="sealNote" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="spread section closing" id="closing">
+        <div class="reveal">
+          <div class="eyebrow">Endnote</div>
+          <h2>别急着升级工具，先升级你和工具的关系。</h2>
+          <p>如果这张地图有用，它应该让你少一点焦虑，多一个明确的下一步。</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const intro = document.querySelector("#intro");
+    const enterButton = document.querySelector("#enterButton");
+    const progressFill = document.querySelector("#progressFill");
+    const sealButton = document.querySelector("#sealButton");
+    const sealNote = document.querySelector("#sealNote");
+    const commitText = document.querySelector("#commitText");
+
+    const hideIntro = () => {
+      intro.classList.add("is-hidden");
+      window.setTimeout(() => intro.remove(), 700);
+    };
+
+    enterButton.addEventListener("click", hideIntro);
+
+    const updateProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      progressFill.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("is-visible");
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    updateProgress();
+
+    sealButton.addEventListener("click", () => {
+      const text = commitText.value.trim();
+      sealNote.textContent = text
+        ? "已确认。现在不是泛泛学 AI，而是跨过下一道具体门槛。"
+        : "先写出当前等级和下一步，再确认。";
+    });
+  </script>
+</body>
+</html>
